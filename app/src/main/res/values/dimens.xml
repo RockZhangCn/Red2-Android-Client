@@ -1,0 +1,13 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="layout_button_margin">2dp</dimen>
+    <dimen name="layout_button_padding">2dp</dimen>
+    <dimen name="layout_button_textsize">18sp</dimen>
+
+    <dimen name="main_activity_padding">12dp</dimen>
+    <dimen name="main_activity_margin">12dp</dimen>
+    <dimen name="main_activity_margin_x2">24dp</dimen>
+    <dimen name="main_activity_font">34sp</dimen>
+
+
+</resources>

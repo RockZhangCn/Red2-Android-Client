@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/start_game_item"
+        android:title="@string/start_game" />
+
+    <item android:id="@+id/callin_lineup_item"
+        android:title="@string/callin_lineup" />
+
+    <item android:id="@+id/save_lineup_item"
+        android:title="@string/save_lineup" />
+
+    <item android:id="@+id/restart_item"
+        android:title="@string/restart" />
+
+    <item android:id="@+id/about_item"
+        android:title="@string/about" />
+
+    <item android:id="@+id/quit_item"
+        android:title="@string/quit" />
+</menu>
