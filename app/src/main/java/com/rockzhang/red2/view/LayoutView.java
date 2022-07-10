@@ -17,15 +17,20 @@
 package com.rockzhang.red2.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.MediaPlayer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.rockzhang.red2.R;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -135,6 +140,11 @@ public class LayoutView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.save();
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.poker_0);
+        Rect src = new Rect(0, 0, 200, 200);
+        Rect dst = new Rect(0, 0, 200, 150);
+        canvas.drawBitmap(bitmap,src,dst,mLinePaint);
 
         mLinePaint.setStrokeWidth(BASE_LINE_WIDTH);
         final int paddingLeft = 0;
