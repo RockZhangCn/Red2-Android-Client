@@ -21,6 +21,25 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <EditText
+        android:id="@+id/player_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:layout_margin="@dimen/main_activity_margin"
+        android:textSize="@dimen/main_activity_font"
+        />
+
+    <EditText
+        android:id="@+id/server_address"
+        android:layout_width="match_parent"
+        android:text="ws://love.rockzhang.com:5678"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:layout_margin="@dimen/main_activity_margin"
+        android:textSize="@dimen/main_activity_font"
+        />
+
     <Button
         android:id="@+id/start_game_item"
         android:layout_width="wrap_content"
@@ -31,40 +50,5 @@
         android:text="开始游戏"
         android:textAlignment="center" />
 
-    <Button
-        android:id="@+id/layout_chess"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/main_activity_margin"
-        android:padding="@dimen/main_activity_padding"
-        android:text="棋盘布局"
-        android:textSize="@dimen/main_activity_font"
-        android:textAlignment="center" />
-
-    <Button
-        android:id="@+id/other_func"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/main_activity_margin"
-        android:padding="@dimen/main_activity_padding"
-        android:textSize="@dimen/main_activity_font"
-        android:text="遗留功能"
-        android:textAlignment="center" />
-
-    <Button
-        android:id="@+id/test_func"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/main_activity_margin"
-        android:padding="@dimen/main_activity_padding"
-        android:textSize="@dimen/main_activity_font"
-        android:text="测试功能"
-        android:textAlignment="center" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
 
 </LinearLayout>

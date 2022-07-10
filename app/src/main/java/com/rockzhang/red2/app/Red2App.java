@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 //import okhttp3.OkHttpClient;
 //import retrofit2.Retrofit;
@@ -13,9 +15,6 @@ public class Red2App extends Application {
 
     private static Context mAppContext;
     private static Red2App m_singleInstance;
-//    private static OkHttpClient networkClient;
-    Handler mainHandler = new Handler(Looper.getMainLooper());
-//    private Retrofit mRetrofit;
 
     public static Red2App getInstance() {
         return m_singleInstance;
@@ -26,21 +25,26 @@ public class Red2App extends Application {
         super.onCreate();
         m_singleInstance = this;
         mAppContext = m_singleInstance;
-
-//        networkClient = new OkHttpClient();
-//        mRetrofit = new Retrofit.Builder()
-//                .baseUrl("http://rockzhang.com")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
     }
 
-//    public OkHttpClient getNetworkClient() {
-//        return networkClient;
-//    }
-//
-//    public Retrofit getAPIClient() {
-//        return mRetrofit;
-//    }
+    private int dp2px(Context context, float dp) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
+    public int[] getScreenInfo() {
+        WindowManager mWindowManager  = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        mWindowManager.getDefaultDisplay().getMetrics(metrics);
+        float density = metrics.density;
+        int width = metrics.widthPixels;//获取到的是px，像素，绝对像素，需要转化为dpi
+        int height = metrics.heightPixels;
+
+        // 屏幕宽度算法:屏幕宽度（像素）/屏幕密度
+        int screenWidth = (int) (width / density);  // 屏幕宽度(dp)
+        int screenHeight = (int) (height / density);// 屏幕高度(dp)
+        return new int[] {width, height};
+    }
 
     @Override
     public Context getApplicationContext() {

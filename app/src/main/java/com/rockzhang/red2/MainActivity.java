@@ -3,6 +3,7 @@ package com.rockzhang.red2;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -10,22 +11,30 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.rockzhang.red2.utils.SPUtils;
+
+import java.net.URI;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private String mServerAddress;
+    private String mPlayerName;
+    private EditText mServerAddressWidget;
+    private EditText mPlayerNameWidget;
+
     Handler mainHandler = new Handler(Looper.getMainLooper());
     private Toolbar mToolbar;
     private Button mStartGame;
-    private Button mStartLayout;
-    private Button mOtherFunc;
-    private Button mTestFunc;
 
-    private ProgressDialog progressDialog = null;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -35,20 +44,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-//        mToolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(mToolbar);
-
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         mStartGame = findViewById(R.id.start_game_item);
-        mStartLayout = findViewById(R.id.layout_chess);
-        mOtherFunc = findViewById(R.id.other_func);
-        mTestFunc = findViewById(R.id.test_func);
-
+        mServerAddressWidget = findViewById(R.id.server_address);
+        mPlayerNameWidget = findViewById(R.id.player_name);
         mStartGame.setOnClickListener(this);
-        mStartLayout.setOnClickListener(this);
-        mOtherFunc.setOnClickListener(this);
-        mTestFunc.setOnClickListener(this);
 
-        checkUpdate();
+        mServerAddress = (String) SPUtils.get(this, "server_address", "");
+        mPlayerName = (String) SPUtils.get(this, "player_name", "");
+
+        if (!TextUtils.isEmpty(mServerAddress)) {
+            mServerAddressWidget.setText(mServerAddress);
+        }
+
+        if (!TextUtils.isEmpty(mPlayerName)) {
+            mPlayerNameWidget.setText(mPlayerName);
+        }
     }
 
     @Override
@@ -68,115 +80,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    private void showInProgress(boolean show) {
-        //display a dialog in progress.
-        if (show) {
-            progressDialog = new ProgressDialog(MainActivity.this);
-            progressDialog.setTitle("正在登录");
-            progressDialog.setMessage("登录中，请稍等。。。");
-            progressDialog.setCancelable(true);
-            progressDialog.show();
-        } else {
-            progressDialog.dismiss();
-        }
-    }
-
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.start_game_item:
-                showInProgress(true);
-//                presenter.loginDefaultRoom();
-                break;
-
-            case R.id.layout_chess:
-//                startActivity(new Intent(MainActivity.this, LayoutActivity.class));
-                break;
-            case R.id.other_func:
-//                startActivity(new Intent(MainActivity.this, JunQiActivity.class));
-                break;
-
-            case R.id.test_func:
-                /*
-                 DownloadManager manager = DownloadManager.getInstance(MainActivity.this);
-                 manager.setApkName("appupdate.apk")
-                         .setApkUrl("https://raw.githubusercontent.com/azhon/AppUpdate/master/apk/appupdate.apk")
-                         .setDownloadPath(Environment.getExternalStorageDirectory() + "/AppUpdate")
-                         .setSmallIcon(R.mipmap.ic_launcher)
-                         //可设置，可不设置
-                         //.setConfiguration(configuration)
-                         .download();
-                */
-
-                progressDialog = new ProgressDialog(MainActivity.this);
-                progressDialog.setTitle("正在登录");
-                progressDialog.setMessage("登录中，请稍等。。。");
-                progressDialog.setCancelable(true);
-                progressDialog.show();
+                Intent intent = new Intent(this, FullscreenActivity.class);
+                intent.putExtra("server_address", mServerAddress);
+                intent.putExtra("player_name", mPlayerName);
+                startActivity(intent);
                 break;
         }
     }
-
-    private void checkUpdate() {
-        String versionName;
-        int versionCode;
-        try {
-            PackageManager pm = getPackageManager();
-            PackageInfo pi = pm.getPackageInfo(getPackageName(), 0);
-            versionName = pi.versionName;
-            versionCode = pi.versionCode;
-
-
-        } catch (Exception e) {
-            versionName = "1.0";
-            versionCode = 1;
-        }
-
-//        Request request = new Request.Builder()
-//                .url("http://v.rockzhang.com/fourwar/app/config")
-//                .build();
-
-//        FourWarApp.getInstance().getNetworkClient().newCall(request).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//
-//                mainHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        showUpdateDialog();
-//                    }
-//                });
-//
-//            }
-//        });
-    }
-
-    private void showUpdateDialog() {
-        final AlertDialog.Builder normalDialog =
-                new AlertDialog.Builder(this);
-        normalDialog.setTitle("信息通告");
-        normalDialog.setMessage("检测到新版本需要升级");
-        normalDialog.setPositiveButton("确定",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-        normalDialog.setNegativeButton("取消",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-
-        normalDialog.show();
-    }
-
 }

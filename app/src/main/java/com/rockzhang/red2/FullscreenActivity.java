@@ -1,6 +1,7 @@
 package com.rockzhang.red2;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Build;
@@ -101,10 +102,16 @@ public class FullscreenActivity extends AppCompatActivity {
         }
     };
     private ActivityFullscreenBinding binding;
+    private String mServerAddress;
+    private String mPlayerName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent startIntent = getIntent();
+        mPlayerName = startIntent.getStringExtra("player_name");
+        mServerAddress = startIntent.getStringExtra("server_address");
 
         binding = ActivityFullscreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

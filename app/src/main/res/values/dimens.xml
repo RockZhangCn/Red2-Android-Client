@@ -7,7 +7,7 @@
     <dimen name="main_activity_padding">12dp</dimen>
     <dimen name="main_activity_margin">12dp</dimen>
     <dimen name="main_activity_margin_x2">24dp</dimen>
-    <dimen name="main_activity_font">34sp</dimen>
+    <dimen name="main_activity_font">24sp</dimen>
 
 
 </resources>
