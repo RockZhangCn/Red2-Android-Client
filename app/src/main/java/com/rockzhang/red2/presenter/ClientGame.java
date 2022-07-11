@@ -29,7 +29,7 @@ public class ClientGame implements  IClientGamePresenter {
     }
 
     private void errorHandler(String message, boolean shouldDialog) {
-        VLog.error(message);
+        VLog.error("ClientGame errorHandler message " + message);
         currentUser().showMessage(message, shouldDialog);
     }
 
@@ -41,14 +41,28 @@ public class ClientGame implements  IClientGamePresenter {
 
     private JSONArray mJsonArray;
 
-    public ClientGame(IGameView view) {
+    public ClientGame() { }
+
+    public void setUIView(IGameView view) {
         mUIView = view;
+    }
+
+    private static ClientGame s_Instance = null;
+    public static ClientGame getInstance() {
+        if (s_Instance == null) {
+            synchronized (ClientGame.class) {
+                if (s_Instance == null) {
+                    s_Instance = new ClientGame();
+                }
+            }
+        }
+        return s_Instance;
     }
 
     NetworkHandler.MessageCallback messageCallback = new NetworkHandler.MessageCallback() {
         @Override
         public void OnReceivedMessage(JSONObject obj) {
-            //mUIView.getUIPanelList()
+            // VLog.info("ClientGame OnReceivedMessage " + obj.toString());
             try {
                 if (!obj.has("action")) {
                     errorHandler("Message format error", false);
@@ -61,28 +75,65 @@ public class ClientGame implements  IClientGamePresenter {
                     return;
                 }
 
+                if (action.equals("pong")) {
+                    return;
+                }
+
+                VLog.info("ClientGame OnReceivedMessage " + obj.toString());
                 if (action.equalsIgnoreCase("network_issue")) {
-                    currentUser().showMessage(obj.getString("message"), true);
+                    VLog.info("We get error network_issue");
+                    mUIView.OnLoginResult(false, obj.getString("message"));
                 } else if (action.equalsIgnoreCase("status_broadcast")) {
 
+                    // login handler
+                    if (obj.has("status_all")) {
+                        JSONArray list = obj.getJSONArray("status_all");
+                        for (int i = 0; i < list.length(); i++) {
+                            JSONObject singleUser = list.getJSONObject(i);
+                            String playerName = singleUser.getString("player_name");
+                            int seatPos = singleUser.getInt("position");
+                            int playerStatus = singleUser.getInt("status");
+
+                            if (playerStatus == PlayerStatus.Logined.getValue() && playerName.equals(mPlayerName)) {
+                                mUIView.OnLoginResult(true, "We seat pos " + seatPos);
+                                return;
+                            }
+                        }
+                    }
+
+                    mUIView.OnLoginResult(false, "unknown reason.");
                 }
 
             } catch (Exception e) {
-                currentUser().showMessage(e.toString(), false);
+                VLog.error("ClientGame meet exception " + e.toString());
+                mUIView.OnLoginResult(false, e.toString());
             }
         }
     };
 
     @Override
-    public void Login(String wsAddress, String loginName) {
+    public void login(String wsAddress, String loginName) {
         mPlayerName = loginName;
         mNetworkHandler = new NetworkHandler(NetworkThread.getInstance().getLooper(),
-                URI.create("ws://love.rockzhang.com:5678"), messageCallback);
-        mNetworkHandler.sendWebSocketMessage("");
+                URI.create(wsAddress), messageCallback);
+        //TODO
+        //{"player_name": "nian", "action": "status", "handout_pokers": [], "req_status": 0}
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("player_name", loginName);
+            obj.put("action", "status");
+            obj.put("handout_pokers", new JSONArray());
+            obj.put("req_status", PlayerStatus.Logined.getValue());
+        } catch (Exception e) {
+            VLog.error("Websocket Close exception " + e.toString());
+        }
+
+        VLog.info("ClientGame Login send string " + obj.toString());
+        mNetworkHandler.sendWebSocketMessage(obj.toString());
     }
 
     @Override
-    public void NewPlayerStatus(PlayerStatus status, List<Integer> cards) {
+    public void newPlayerStatus(PlayerStatus status, List<Integer> cards) {
         boolean handoutPokers = !cards.isEmpty();
         if ((getOwnedPokers().size() == cards.size()) && handoutPokers) {
             status = PlayerStatus.RunOut;

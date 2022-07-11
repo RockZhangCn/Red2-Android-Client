@@ -40,13 +40,14 @@ public class NetworkHandler extends Handler {
         mMessageCallback.OnReceivedMessage(obj);
     }
 
+
     public NetworkHandler(@NonNull Looper looper, URI connAddr, MessageCallback callback) {
         super(looper);
         mMessageCallback = callback;
         mClientWS = new WebSocketClient(connAddr) {
             @Override
             public void onOpen(ServerHandshake handshakedata) {
-
+                VLog.info("WS onOpen called");
             }
 
             @Override
@@ -57,13 +58,15 @@ public class NetworkHandler extends Handler {
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
-                String errorStr = String.format("{} closed WS with code {} and reason {}",
+                VLog.info("WS onClose called");
+                String errorStr = String.format("%s closed WS with code %d and reason %s",
                         remote?"Server":"Client", code, reason);
                 errorHandler(errorStr);
             }
 
             @Override
             public void onError(Exception ex) {
+                VLog.info("WS onError called");
                 errorHandler(ex.toString());
             }
         };
@@ -72,11 +75,19 @@ public class NetworkHandler extends Handler {
     }
 
     public void startWebSocket() {
-        try {
-            mClientWS.connectBlocking();
-        } catch (Exception e) {
-            errorHandler(e.toString());
-        }
+        post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mClientWS.connectBlocking();
+                } catch (Exception e) {
+                    mClientWS = null;
+                    errorHandler(e.toString());
+
+                }
+            }
+        });
+
     }
 
     @Override
@@ -89,7 +100,12 @@ public class NetworkHandler extends Handler {
         post(new Runnable() {
             @Override
             public void run() {
-                mClientWS.send(message);
+                try {
+                    if (mClientWS != null)
+                        mClientWS.send(message);
+                } catch (Exception e) {
+                    VLog.error("Send message exception " + e.toString());
+                }
             }
         });
     }

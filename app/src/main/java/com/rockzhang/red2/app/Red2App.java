@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.rockzhang.red2.log.VLog;
+
 //import okhttp3.OkHttpClient;
 //import retrofit2.Retrofit;
 //import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,6 +27,7 @@ public class Red2App extends Application {
         super.onCreate();
         m_singleInstance = this;
         mAppContext = m_singleInstance;
+        getScreenInfo();
     }
 
     private int dp2px(Context context, float dp) {
@@ -43,6 +46,8 @@ public class Red2App extends Application {
         // 屏幕宽度算法:屏幕宽度（像素）/屏幕密度
         int screenWidth = (int) (width / density);  // 屏幕宽度(dp)
         int screenHeight = (int) (height / density);// 屏幕高度(dp)
+        VLog.info("density is " + density + " width height is " + width + "x" + height + " screenWidth = " + screenWidth + "x"
+         + screenHeight);
         return new int[] {width, height};
     }
 

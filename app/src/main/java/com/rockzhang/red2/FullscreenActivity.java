@@ -2,6 +2,7 @@ package com.rockzhang.red2;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Build;
@@ -16,12 +17,19 @@ import android.view.WindowManager;
 
 import com.rockzhang.red2.databinding.ActivityFullscreenBinding;
 import com.rockzhang.red2.log.VLog;
+import com.rockzhang.red2.model.UIPanel;
+import com.rockzhang.red2.presenter.ClientGame;
+import com.rockzhang.red2.presenter.IClientGamePresenter;
+import com.rockzhang.red2.utils.SPUtils;
+import com.rockzhang.red2.view.IGameView;
+
+import java.util.List;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class FullscreenActivity extends AppCompatActivity {
+public class FullscreenActivity extends AppCompatActivity implements IGameView, View.OnClickListener {
 
 //    private final Handler mHideHandler = new Handler(Looper.myLooper());
 //    private View mContentView;
@@ -73,9 +81,18 @@ public class FullscreenActivity extends AppCompatActivity {
     private String mServerAddress;
     private String mPlayerName;
 
+    private IClientGamePresenter mPresenter;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//设置屏幕为横屏, 设置后会锁定方向
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//设置屏幕为横屏, 设置后会锁定方向
 
         //去除标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -98,6 +115,9 @@ public class FullscreenActivity extends AppCompatActivity {
 //
 //        mContentView = binding.fullscreenContent;
 
+        mPresenter = ClientGame.getInstance();
+        mPresenter.setUIView(this);
+
         Intent startIntent = getIntent();
         mPlayerName = startIntent.getStringExtra("player_name");
         mServerAddress = startIntent.getStringExtra("server_address");
@@ -116,5 +136,24 @@ public class FullscreenActivity extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
 //        binding.dummyButton.setOnTouchListener(mDelayHideTouchListener);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.start_game_item:
+
+                break;
+        }
+    }
+
+    @Override
+    public List<UIPanel> getUIPanelList() {
+        return null;
+    }
+
+    @Override
+    public void OnLoginResult(boolean success, String message) {
+
     }
 }

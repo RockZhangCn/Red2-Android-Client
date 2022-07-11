@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IGameView {
     List<UIPanel> getUIPanelList();
+    void OnLoginResult(boolean success, String message);
 }

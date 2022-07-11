@@ -7,7 +7,6 @@ public class GameMessage {
 
     public static JSONObject fromString(String json) {
         try {
-
             JSONObject obj = new JSONObject(json);
             VLog.debug("GameMessage.fromString " + obj.toString());
             return obj;
