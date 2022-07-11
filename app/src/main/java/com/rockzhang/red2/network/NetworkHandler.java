@@ -52,7 +52,6 @@ public class NetworkHandler extends Handler {
             @Override
             public void onMessage(String message) {
                 VLog.info("WS received message " + message);
-                GameMessage.fromString(message);
                 mMessageCallback.OnReceivedMessage(GameMessage.fromString(message));
             }
 
