@@ -6,37 +6,50 @@
     android:gravity="center|center_horizontal|center_vertical"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <EditText
-        android:id="@+id/player_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:layout_margin="@dimen/main_activity_margin"
+        android:layout_gravity="left"
+        android:text="UserName:"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:padding="4dp"
         android:textSize="@dimen/main_activity_font"
         />
 
+
+
+    <EditText
+        android:id="@+id/player_name"
+        android:hint="The any name you like."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="36dp"
+        android:padding="4dp"
+        android:textSize="@dimen/main_activity_font"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:text="LoginAddress:"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:padding="4dp"
+        android:textSize="@dimen/main_activity_font"
+        />
     <EditText
         android:id="@+id/server_address"
         android:layout_width="match_parent"
         android:text="ws://love.rockzhang.com:5678"
         android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:layout_margin="@dimen/main_activity_margin"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="36dp"
+        android:padding="4dp"
         android:textSize="@dimen/main_activity_font"
         />
 

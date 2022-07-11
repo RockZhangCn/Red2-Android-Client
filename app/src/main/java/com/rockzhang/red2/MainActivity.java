@@ -31,15 +31,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText mPlayerNameWidget;
 
     Handler mainHandler = new Handler(Looper.getMainLooper());
-    private Toolbar mToolbar;
     private Button mStartGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+
         mStartGame = findViewById(R.id.start_game_item);
         mServerAddressWidget = findViewById(R.id.server_address);
         mPlayerNameWidget = findViewById(R.id.player_name);
@@ -62,8 +60,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.start_game_item:
                 Intent intent = new Intent(this, FullscreenActivity.class);
+                mServerAddress = mServerAddressWidget.getText().toString();
+                mPlayerName = mPlayerNameWidget.getText().toString();
+
                 intent.putExtra("server_address", mServerAddress);
+                SPUtils.put(this, "server_address", mServerAddress);
                 intent.putExtra("player_name", mPlayerName);
+                SPUtils.put(this, "player_name", mPlayerName);
+
                 startActivity(intent);
                 break;
         }
