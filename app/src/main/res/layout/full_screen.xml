@@ -13,7 +13,7 @@
 
         <!--  Left user -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
@@ -31,26 +31,65 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:src="@raw/timer"
+                android:id="@+id/left_user_timer_img"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@raw/green_back"
                 android:id="@+id/left_user_poker_img"/>
         </LinearLayout>
 
-
+        <!--center & top-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!--Top panel-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="top_user"
+                    android:id="@+id/top_user_name">
+                </TextView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="left_message"
+                    android:id="@+id/top_user_message">
+                </TextView>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@raw/timer"
+                    android:id="@+id/top_user_timer_img"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@raw/green_back"
+                    android:id="@+id/top_user_poker_img"/>
             </LinearLayout>
+            <!--Center panel -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Center panel"/>
 
+            </LinearLayout>
         </LinearLayout>
 
-
+        <!-- Right user -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
@@ -66,7 +105,14 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:src="@raw/timer"
+                android:id="@+id/right_user_timer_img"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@raw/green_back"
                 android:id="@+id/right_user_poker_img"/>
+
         </LinearLayout>
 
     </LinearLayout>
@@ -74,7 +120,7 @@
     <!--    Bottom user. -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="90dp"
         android:orientation="horizontal">
 
 
