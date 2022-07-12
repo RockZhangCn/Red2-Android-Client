@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.rockzhang.red2.log.VLog;
 import com.rockzhang.red2.model.UIPanel;
 import com.rockzhang.red2.presenter.ClientGame;
 import com.rockzhang.red2.presenter.IClientGamePresenter;
@@ -70,6 +71,11 @@ public class MainActivity extends AppCompatActivity implements IGameView, View.O
                 SPUtils.put(this, "server_address", mServerAddress);
                 SPUtils.put(this, "player_name", mPlayerName);
 
+                Intent intent = new Intent(MainActivity.this, FullscreenActivity.class);
+                intent.putExtra("server_address", mServerAddress);
+                intent.putExtra("player_name", mPlayerName);
+                startActivity(intent);
+
                 break;
         }
     }
@@ -81,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements IGameView, View.O
 
     @Override
     public void OnLoginResult(boolean success, String message) {
+        VLog.info("MainActivity OnLoginResult success " + success + " Message is " + message);
         mUIHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -109,13 +116,13 @@ public class MainActivity extends AppCompatActivity implements IGameView, View.O
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 } else {
-                    Intent intent = new Intent(MainActivity.this, FullscreenActivity.class);
-                    intent.putExtra("server_address", mServerAddress);
-                    SPUtils.put(MainActivity.this, "server_address", mServerAddress);
-                    intent.putExtra("player_name", mPlayerName);
-                    SPUtils.put(MainActivity.this, "player_name", mPlayerName);
-
-                    startActivity(intent);
+//                    Intent intent = new Intent(MainActivity.this, FullscreenActivity.class);
+//                    intent.putExtra("server_address", mServerAddress);
+//                    SPUtils.put(MainActivity.this, "server_address", mServerAddress);
+//                    intent.putExtra("player_name", mPlayerName);
+//                    SPUtils.put(MainActivity.this, "player_name", mPlayerName);
+//
+//                    startActivity(intent);
                 }
             }
         });

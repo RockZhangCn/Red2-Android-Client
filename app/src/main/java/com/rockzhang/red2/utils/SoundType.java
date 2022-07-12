@@ -8,7 +8,7 @@ public enum SoundType {
     SOUND_GAME_WIN(R.raw.wingame),
 
     SOUND_WAS_KILLED(R.raw.chesssuicide),
-    SOUND_KILL_ONE(R.raw.killchess),
+    SOUND_KILL_ONE(R.raw.chesssuicide),
     SOUND_CHESS_EQUAL(R.raw.chessequal),
 
     SOUND_GAME_CLOCK(R.raw.timetick),

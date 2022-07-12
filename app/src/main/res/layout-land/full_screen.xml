@@ -129,7 +129,7 @@
         <!-- Right user -->
         <LinearLayout
             android:layout_width="120dp"
-            android:background="@color/colorLayoutBackground"
+            android:background="@android:color/holo_blue_light"
             android:layout_height="match_parent"
             android:orientation="vertical">
             <TextView
@@ -172,14 +172,51 @@
     <!--    Bottom user. -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:orientation="horizontal">
-        <TextView
+        android:layout_height="160dp"
+        android:background="@color/purple_200"
+        android:orientation="vertical">
+
+        <com.rockzhang.red2.view.PokerView
+            android:paddingHorizontal="40dp"
+            android:paddingBottom="3dp"
+            android:paddingTop="14dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Bottom panel"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/bottom_poker_view">
+
+        </com.rockzhang.red2.view.PokerView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="StartGame"
+                android:id="@+id/start_game_button"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Handout"
+                android:id="@+id/handout_button"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Single"
+                android:id="@+id/single_one_button"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share2"
+                android:id="@+id/share_button"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -52,7 +52,7 @@ public class NetworkHandler extends Handler {
 
             @Override
             public void onMessage(String message) {
-                VLog.info("WS received message " + message);
+                VLog.debug("WS received message " + message);
                 mMessageCallback.OnReceivedMessage(GameMessage.fromString(message));
             }
 
@@ -83,7 +83,6 @@ public class NetworkHandler extends Handler {
                 } catch (Exception e) {
                     mClientWS = null;
                     errorHandler(e.toString());
-
                 }
             }
         });

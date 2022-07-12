@@ -81,7 +81,7 @@ public class ClientGame implements  IClientGamePresenter {
 
                 VLog.info("ClientGame OnReceivedMessage " + obj.toString());
                 if (action.equalsIgnoreCase("network_issue")) {
-                    VLog.info("We get error network_issue");
+                    VLog.info("We get error network_issue, will show Dialog");
                     mUIView.OnLoginResult(false, obj.getString("message"));
                 } else if (action.equalsIgnoreCase("status_broadcast")) {
 

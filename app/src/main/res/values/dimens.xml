@@ -9,5 +9,7 @@
     <dimen name="main_activity_margin_x2">24dp</dimen>
     <dimen name="main_activity_font">24sp</dimen>
 
+    <dimen name="poker_width">60dp</dimen>
+    <dimen name="timer_width">60dp</dimen>
 
 </resources>
