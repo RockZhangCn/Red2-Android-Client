@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.rockzhang.red2.log.VLog;
+import com.rockzhang.red2.view.PokerView;
 
 //import okhttp3.OkHttpClient;
 //import retrofit2.Retrofit;
@@ -28,6 +29,12 @@ public class Red2App extends Application {
         m_singleInstance = this;
         mAppContext = m_singleInstance;
         getScreenInfo();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                PokerView.LoadPokerBitmap(Red2App.getInstance().getApplicationContext());
+            }
+        }).start();
     }
 
     private int dp2px(Context context, float dp) {

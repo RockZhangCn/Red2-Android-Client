@@ -45,9 +45,11 @@ import java.util.List;
  */
 
 public class PokerView extends View {
-    private Paint mBitmapPaint;
 
-    private int[] PokerBitmapIndex = new int[] {
+    private static boolean sPokerBitmapInitialized = false;
+    private static Bitmap[] PokerBitmap = new Bitmap[52];
+
+    private static int[] PokerBitmapIndex = new int[] {
             R.drawable.poker_0, R.drawable.poker_1, R.drawable.poker_2, R.drawable.poker_3,
             R.drawable.poker_4, R.drawable.poker_5, R.drawable.poker_6, R.drawable.poker_7,
             R.drawable.poker_8, R.drawable.poker_9, R.drawable.poker_10, R.drawable.poker_11,
@@ -63,12 +65,23 @@ public class PokerView extends View {
             R.drawable.poker_48, R.drawable.poker_49, R.drawable.poker_50, R.drawable.poker_51
     };
 
+    public static void LoadPokerBitmap(Context context) {
+        if (sPokerBitmapInitialized)
+            return;
 
+        sPokerBitmapInitialized = true;
+
+        for(int i = 0; i < PokerBitmapIndex.length; i++)
+            PokerBitmap[i] = BitmapFactory.decodeResource(context.getResources(), PokerBitmapIndex[i]);
+    }
 
     public static final int POKER_GAP_PX =  dp2px(Red2App.getInstance(), 24);
     private int POKER_DRAW_WIDTH = 0;
+
     private int mBitmapWidth = 0;
     private int mBitmapHeight = 0;
+
+    private Paint mBitmapPaint;
     private Rect mPicRect;
 
     private final List<Integer> mWeSelectedPokerIndex = new ArrayList<>(24);
@@ -101,8 +114,6 @@ public class PokerView extends View {
         mBitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setDither(true);
-
-
     }
 
     public List<Integer> getDisplayCards() {
@@ -154,11 +165,8 @@ public class PokerView extends View {
 
         VLog.info("View size " + getWidth() + ", " + getHeight());
         for (int i = 0; i < mDrawingPokers.size(); i++) {
-
-//            if (i < mSelectPokerIndex)
-//                continue;
-
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), PokerBitmapIndex[mDrawingPokers.get(i)]);
+            //BitmapFactory.decodeResource(getResources(), PokerBitmapIndex[mDrawingPokers.get(i)]);
+            Bitmap bitmap = PokerBitmap[i];
 
             if (POKER_DRAW_WIDTH == 0) {
                 mBitmapWidth = bitmap.getWidth();
@@ -170,8 +178,6 @@ public class PokerView extends View {
 
             int drawStartX = paddingLeft + i * POKER_GAP_PX;
 
-//            Rect src = new Rect(0, 0, mBitmapWidth, mBitmapHeight);
-
             if (mWeSelectedPokerIndex.contains(i)) {
                 paddingTop = 0;
             } else {
@@ -182,6 +188,7 @@ public class PokerView extends View {
             VLog.info("src " + mPicRect.toString() + "  dst " + dst.toString());
             canvas.drawBitmap(bitmap, mPicRect, dst, mBitmapPaint);
         }
+
         mSelectPokerIndex = 0;
         canvas.restore();
     }
@@ -199,7 +206,6 @@ public class PokerView extends View {
         float fx = event.getX();
         float fy = event.getY();
 
-        // VLog.info("We click PokerView " + fx + ", " + fy);
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             int x = Math.round(fx);
             int index = (x - getPaddingLeft())/ POKER_GAP_PX;

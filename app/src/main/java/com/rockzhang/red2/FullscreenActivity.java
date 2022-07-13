@@ -147,7 +147,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
             public void showTimer(Boolean show) {
 
             }
-        }
+        };
 
         VLog.info("PlayerName is " + mPlayerName + " Server address is " + mServerAddress);
     }
