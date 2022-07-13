@@ -66,9 +66,10 @@ public class PokerView extends View {
 
 
     public static final int POKER_GAP_PX =  dp2px(Red2App.getInstance(), 24);
-    private static int POKER_DRAW_WIDTH = 0;
-    private static int mBitmapWidth = 0;
-    private static int mBitmapHeight = 0;
+    private int POKER_DRAW_WIDTH = 0;
+    private int mBitmapWidth = 0;
+    private int mBitmapHeight = 0;
+    private Rect mPicRect;
 
     private final List<Integer> mWeSelectedPokerIndex = new ArrayList<>(24);
 
@@ -146,13 +147,17 @@ public class PokerView extends View {
         int paddingTop = getPaddingTop();
         final int paddingBottom = getPaddingBottom();
 
-        int width = getWidth() - paddingLeft - paddingRight;
+        // int width = getWidth() - paddingLeft - paddingRight;
         int height = getHeight() - paddingTop - paddingBottom;
 
         VLog.info("padding l " + paddingLeft + " r " + paddingRight + " t " + paddingTop + " b " + paddingBottom);
 
         VLog.info("View size " + getWidth() + ", " + getHeight());
         for (int i = 0; i < mDrawingPokers.size(); i++) {
+
+//            if (i < mSelectPokerIndex)
+//                continue;
+
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), PokerBitmapIndex[mDrawingPokers.get(i)]);
 
             if (POKER_DRAW_WIDTH == 0) {
@@ -160,11 +165,12 @@ public class PokerView extends View {
                 mBitmapHeight = bitmap.getHeight();
                 VLog.info("Picture size " + mBitmapWidth + ", " + mBitmapHeight);
                 POKER_DRAW_WIDTH = (int) Math.round((1.0 * mBitmapWidth * height) / mBitmapHeight);
+                mPicRect = new Rect(0, 0, mBitmapWidth, mBitmapHeight);
             }
 
             int drawStartX = paddingLeft + i * POKER_GAP_PX;
 
-            Rect src = new Rect(0, 0, mBitmapWidth, mBitmapHeight);
+//            Rect src = new Rect(0, 0, mBitmapWidth, mBitmapHeight);
 
             if (mWeSelectedPokerIndex.contains(i)) {
                 paddingTop = 0;
@@ -173,10 +179,10 @@ public class PokerView extends View {
             }
 
             Rect dst = new Rect(drawStartX, paddingTop, POKER_DRAW_WIDTH + drawStartX, height + paddingTop);
-            VLog.info("src " + src.toString() + "  dst " + dst.toString());
-            canvas.drawBitmap(bitmap, src, dst, mBitmapPaint);
+            VLog.info("src " + mPicRect.toString() + "  dst " + dst.toString());
+            canvas.drawBitmap(bitmap, mPicRect, dst, mBitmapPaint);
         }
-
+        mSelectPokerIndex = 0;
         canvas.restore();
     }
 
@@ -186,6 +192,8 @@ public class PokerView extends View {
         // mTotalWidth = w;
         // mTotalHeight = h;
     }
+
+    private int mSelectPokerIndex = 0;
 
     public boolean onTouchEvent(MotionEvent event) {
         float fx = event.getX();
@@ -205,6 +213,7 @@ public class PokerView extends View {
             } else {
                 mWeSelectedPokerIndex.add(index);
             }
+            mSelectPokerIndex = index;
             invalidate();
         }
 
