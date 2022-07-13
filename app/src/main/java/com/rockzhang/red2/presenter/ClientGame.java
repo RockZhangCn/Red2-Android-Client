@@ -50,7 +50,7 @@ public class ClientGame implements  IClientGamePresenter {
     }
 
     private int mWeSeatPos;
-    private PlayerStatus mPlayerStatus;
+    private int mPlayerStatus;
     NetworkHandler.MessageCallback messageCallback = new NetworkHandler.MessageCallback() {
         @Override
         public void OnReceivedMessage(JSONObject obj) {
@@ -84,10 +84,10 @@ public class ClientGame implements  IClientGamePresenter {
                             JSONObject singleUser = list.getJSONObject(i);
                             String playerName = singleUser.getString("player_name");
                             int seatPos = singleUser.getInt("position");
-                            PlayerStatus playerStatus = PlayerStatus.fromValue(singleUser.getInt("status"));
+                            int playerStatus = singleUser.getInt("status");
 
-                            if (playerStatus == PlayerStatus.Logined && playerName.equals(mPlayerName)) {
-                                mUIView.OnLoginResult(true, "We seat pos " + mWeSeatPos);
+                            if (playerStatus == PlayerStatus.Logined.getValue() && playerName.equals(mPlayerName)) {
+                                mUIView.OnLoginResult(true, "We seat pos " + seatPos);
                                 mPlayerStatus = playerStatus;
                                 mWeSeatPos = seatPos;
                                 return;
@@ -109,13 +109,13 @@ public class ClientGame implements  IClientGamePresenter {
                             JSONObject singleUser = list.getJSONObject(i);
                             String playerName = singleUser.getString("player_name");
                             int seatPos = singleUser.getInt("position");
-                            PlayerStatus playerStatus = PlayerStatus.fromValue(singleUser.getInt("status"));
+                            int playerStatus = singleUser.getInt("status");
 
-                            int layout_index = (seatPos + 4 - mWeSeatPos) % 4;
-                            if (playerStatus == PlayerStatus.Logined || playerStatus == PlayerStatus.Started) {
-                                mUIView.getUIPanelList().get(layout_index).showName(playerName);
-                                String message =((playerStatus == PlayerStatus.Logined) ? "online":"ready");
-                                mUIView.getUIPanelList().get(layout_index).showMessage(message, false);
+                            int layoutIndex = (seatPos + 4 - mWeSeatPos) % 4;
+                            if (playerStatus == PlayerStatus.Logined.getValue() || playerStatus == PlayerStatus.Started.getValue()) {
+                                mUIView.getUIPanelList().get(layoutIndex).showName(playerName);
+                                String message =((playerStatus == PlayerStatus.Logined.getValue()) ? "online":"ready");
+                                mUIView.getUIPanelList().get(layoutIndex).showMessage(message, false);
                             }
 
                         }
