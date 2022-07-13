@@ -95,7 +95,7 @@ public class NetworkHandler extends Handler {
     }
 
     public void sendWebSocketMessage(String message) {
-        VLog.info("Client Websocket will send message " + message);
+        VLog.info("Client WebSocket will send message " + message);
         post(new Runnable() {
             @Override
             public void run() {

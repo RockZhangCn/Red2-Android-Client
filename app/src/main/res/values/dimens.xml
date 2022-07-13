@@ -11,5 +11,7 @@
 
     <dimen name="poker_width">60dp</dimen>
     <dimen name="timer_width">60dp</dimen>
+    <dimen name="poker_num_size">30sp</dimen>
+
 
 </resources>

@@ -43,14 +43,29 @@
                 android:gravity="center_horizontal"
                 android:src="@raw/timer"
                 android:id="@+id/left_user_timer_img"/>
-            <ImageView
+
+            <FrameLayout
                 android:layout_width="@dimen/poker_width"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:src="@raw/green_back"
-                android:id="@+id/left_user_poker_img"/>
+                android:gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@raw/green_back"
+                    android:id="@+id/left_user_poker_img"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5"
+                    android:textColor="#FF0000"
+                    android:textSize="@dimen/poker_num_size"
+                    android:id="@+id/left_user_poker_num"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    />
+            </FrameLayout>
 
         </LinearLayout>
 
@@ -88,16 +103,33 @@
                     android:layout_gravity="center"
                     android:src="@raw/timer"
                     android:id="@+id/top_user_timer_img"/>
-                <ImageView
+
+                <FrameLayout
                     android:layout_width="@dimen/poker_width"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_gravity="center"
-                    android:src="@raw/green_back"
-                    android:id="@+id/top_user_poker_img"/>
+                    android:layout_gravity="center">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@raw/green_back"
+                        android:id="@+id/top_user_poker_img"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/top_user_poker_num"
+                        android:textColor="#FF0000"
+                        android:text="5"
+                        android:textSize="@dimen/poker_num_size"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        />
+                </FrameLayout>
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -120,7 +152,7 @@
                 <com.rockzhang.red2.view.PokerView
                     android:paddingHorizontal="40dp"
                     android:paddingBottom="3dp"
-                    android:paddingTop="3dp"
+                    android:paddingTop="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/center_poker_view">
@@ -160,15 +192,30 @@
                 android:gravity="center_horizontal"
                 android:src="@raw/timer"
                 android:id="@+id/right_user_timer_img"/>
-            <ImageView
+
+
+            <FrameLayout
                 android:layout_width="@dimen/poker_width"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:src="@raw/green_back"
-                android:id="@+id/right_user_poker_img"/>
-
+                android:gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@raw/green_back"
+                    android:id="@+id/right_user_poker_img"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/right_user_poker_num"
+                    android:text="5"
+                    android:textColor="#FF0000"
+                    android:textSize="@dimen/poker_num_size"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    />
+            </FrameLayout>
         </LinearLayout>
 
     </LinearLayout>
@@ -179,7 +226,49 @@
         android:layout_height="160dp"
         android:background="@color/purple_200"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="24sp"
+                android:id="@+id/bottom_name"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开始"
+                android:layout_weight="1"
+                android:id="@+id/start_game_button"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="抢2"
+                android:id="@+id/do_action_button"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="不抢"
+                android:id="@+id/do_negative_button"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:id="@+id/bottom_message"/>
+        </LinearLayout>
         <com.rockzhang.red2.view.PokerView
             android:paddingHorizontal="40dp"
             android:paddingBottom="3dp"
@@ -190,43 +279,6 @@
             android:id="@+id/bottom_poker_view">
 
         </com.rockzhang.red2.view.PokerView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/bottom_name"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/bottom_message"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="开始"
-                android:id="@+id/start_game_button"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="抢2"
-                android:id="@+id/do_action_button"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="不抢"
-                android:id="@+id/do_negative_button"/>
-
-
-
-        </LinearLayout>
 
     </LinearLayout>
 

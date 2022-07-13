@@ -21,4 +21,8 @@ public class PlayerStatus {
         return mInternalValue;
     }
 
+    public static PlayerStatus fromValue(int value) {
+        return new PlayerStatus(value);
+    }
+
 }

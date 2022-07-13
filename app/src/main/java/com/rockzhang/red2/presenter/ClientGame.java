@@ -41,24 +41,16 @@ public class ClientGame implements  IClientGamePresenter {
 
     private JSONArray mJsonArray;
 
-    public ClientGame() { }
+    public ClientGame() {
+        mWeSeatPos = -1;
+    }
 
     public void setUIView(IGameView view) {
         mUIView = view;
     }
 
-    private static ClientGame s_Instance = null;
-    public static ClientGame getInstance() {
-        if (s_Instance == null) {
-            synchronized (ClientGame.class) {
-                if (s_Instance == null) {
-                    s_Instance = new ClientGame();
-                }
-            }
-        }
-        return s_Instance;
-    }
-
+    private int mWeSeatPos;
+    private PlayerStatus mPlayerStatus;
     NetworkHandler.MessageCallback messageCallback = new NetworkHandler.MessageCallback() {
         @Override
         public void OnReceivedMessage(JSONObject obj) {
@@ -81,7 +73,7 @@ public class ClientGame implements  IClientGamePresenter {
 
                 VLog.info("ClientGame OnReceivedMessage " + obj.toString());
                 if (action.equalsIgnoreCase("network_issue")) {
-                    VLog.info("We get error network_issue, will show Dialog");
+                    VLog.warning("We get error network_issue, will show Dialog");
                     mUIView.OnLoginResult(false, obj.getString("message"));
                 } else if (action.equalsIgnoreCase("status_broadcast")) {
 
@@ -92,16 +84,44 @@ public class ClientGame implements  IClientGamePresenter {
                             JSONObject singleUser = list.getJSONObject(i);
                             String playerName = singleUser.getString("player_name");
                             int seatPos = singleUser.getInt("position");
-                            int playerStatus = singleUser.getInt("status");
+                            PlayerStatus playerStatus = PlayerStatus.fromValue(singleUser.getInt("status"));
 
-                            if (playerStatus == PlayerStatus.Logined.getValue() && playerName.equals(mPlayerName)) {
-                                mUIView.OnLoginResult(true, "We seat pos " + seatPos);
+                            if (playerStatus == PlayerStatus.Logined && playerName.equals(mPlayerName)) {
+                                mUIView.OnLoginResult(true, "We seat pos " + mWeSeatPos);
+                                mPlayerStatus = playerStatus;
+                                mWeSeatPos = seatPos;
                                 return;
                             }
                         }
+
+
+                        if (mWeSeatPos == -1) {
+                            mWeSeatPos = obj.getInt("recover_pos");
+                            VLog.info("We recovered from network issue , pos is " + mWeSeatPos);
+                        }
+
+                        int activePos = obj.getInt("active_pos");
+                        if (-1 < activePos && activePos < 4) {
+                            mUIView.getUIPanelList().get((activePos + 4 - mWeSeatPos) % 4).showTimer(true);
+                        }
+
+                        for (int i = 0; i < list.length(); i++) {
+                            JSONObject singleUser = list.getJSONObject(i);
+                            String playerName = singleUser.getString("player_name");
+                            int seatPos = singleUser.getInt("position");
+                            PlayerStatus playerStatus = PlayerStatus.fromValue(singleUser.getInt("status"));
+
+                            int layout_index = (seatPos + 4 - mWeSeatPos) % 4;
+                            if (playerStatus == PlayerStatus.Logined || playerStatus == PlayerStatus.Started) {
+                                mUIView.getUIPanelList().get(layout_index).showName(playerName);
+                                String message =((playerStatus == PlayerStatus.Logined) ? "online":"ready");
+                                mUIView.getUIPanelList().get(layout_index).showMessage(message, false);
+                            }
+
+                        }
                     }
 
-                    mUIView.OnLoginResult(false, "unknown reason.");
+                    // mUIView.OnLoginResult(false, "unknown reason.");
                 }
 
             } catch (Exception e) {
@@ -137,8 +157,6 @@ public class ClientGame implements  IClientGamePresenter {
         boolean handoutPokers = !cards.isEmpty();
         if ((getOwnedPokers().size() == cards.size()) && handoutPokers) {
             status = PlayerStatus.RunOut;
-        } else {
-            status = PlayerStatus.Handout;
         }
 
         mJsonArray = new JSONArray();
@@ -157,6 +175,7 @@ public class ClientGame implements  IClientGamePresenter {
         } catch (Exception e) {
             errorHandler(e.toString(), false);
         }
+
         mNetworkHandler.sendWebSocketMessage(sendJsonObject.toString());
     }
 

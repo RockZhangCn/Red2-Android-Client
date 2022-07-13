@@ -20,12 +20,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -35,14 +32,8 @@ import com.rockzhang.red2.log.VLog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-
-/**
- * A colorful circle view with text.
- *
- * @author SongNing
- */
 
 public class PokerView extends View {
 
@@ -65,6 +56,8 @@ public class PokerView extends View {
             R.drawable.poker_48, R.drawable.poker_49, R.drawable.poker_50, R.drawable.poker_51
     };
 
+    private int mDrawCenterStartPos = 0;
+
     public static void LoadPokerBitmap(Context context) {
         if (sPokerBitmapInitialized)
             return;
@@ -84,7 +77,7 @@ public class PokerView extends View {
     private Paint mBitmapPaint;
     private Rect mPicRect;
 
-    private final List<Integer> mWeSelectedPokerIndex = new ArrayList<>(24);
+    private final List<Integer> mWeSelectedPokerList = new ArrayList<>(24);
 
     private List<Integer> mDrawingPokers = new ArrayList<>(32);
 
@@ -105,8 +98,10 @@ public class PokerView extends View {
         mDrawingPokers.add(18);
         mDrawingPokers.add(24);
         mDrawingPokers.add(32);
+        mDrawingPokers.add(48);
+        mDrawingPokers.add(48);
+        Collections.sort(mDrawingPokers,  Collections.reverseOrder());
 
-        setBackgroundColor(0xFF777777);
         init();
     }
 
@@ -123,6 +118,20 @@ public class PokerView extends View {
     public void setDisplayCards(List<Integer> cards) {
         mDrawingPokers = cards;
         invalidate();
+    }
+
+    public List<Integer> getSelectedCards() {
+
+        List<Integer> selectedList = new ArrayList<>(24);
+        for (int i = 0; i < mDrawingPokers.size(); i++) {
+            if (mWeSelectedPokerList.contains(i)) {
+                selectedList.add(mDrawingPokers.get(i));
+            }
+        }
+
+        VLog.info("We selected pokers " + Arrays.toString(selectedList.toArray()));
+
+        return selectedList;
     }
 
     @Override
@@ -151,6 +160,10 @@ public class PokerView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        if (mDrawingPokers.size() == 0)
+            return;
+
         canvas.save();
 
         final int paddingLeft = getPaddingLeft();
@@ -158,34 +171,38 @@ public class PokerView extends View {
         int paddingTop = getPaddingTop();
         final int paddingBottom = getPaddingBottom();
 
-        // int width = getWidth() - paddingLeft - paddingRight;
+        int width = getWidth() - paddingLeft - paddingRight;
         int height = getHeight() - paddingTop - paddingBottom;
 
-        VLog.info("padding l " + paddingLeft + " r " + paddingRight + " t " + paddingTop + " b " + paddingBottom);
+        VLog.debug("padding l " + paddingLeft + " r " + paddingRight + " t " + paddingTop + " b " + paddingBottom);
 
-        VLog.info("View size " + getWidth() + ", " + getHeight());
+        VLog.debug("View size " + getWidth() + ", " + getHeight());
+
+        int totalUsedSpace = (mDrawingPokers.size() + 3) * POKER_GAP_PX;
+        // for draw pokers in center.
+        mDrawCenterStartPos = (width - totalUsedSpace) / 2;
         for (int i = 0; i < mDrawingPokers.size(); i++) {
             //BitmapFactory.decodeResource(getResources(), PokerBitmapIndex[mDrawingPokers.get(i)]);
-            Bitmap bitmap = PokerBitmap[i];
+            Bitmap bitmap = PokerBitmap[mDrawingPokers.get(i)];
 
             if (POKER_DRAW_WIDTH == 0) {
                 mBitmapWidth = bitmap.getWidth();
                 mBitmapHeight = bitmap.getHeight();
-                VLog.info("Picture size " + mBitmapWidth + ", " + mBitmapHeight);
+                VLog.debug("Picture size " + mBitmapWidth + ", " + mBitmapHeight);
                 POKER_DRAW_WIDTH = (int) Math.round((1.0 * mBitmapWidth * height) / mBitmapHeight);
                 mPicRect = new Rect(0, 0, mBitmapWidth, mBitmapHeight);
             }
 
-            int drawStartX = paddingLeft + i * POKER_GAP_PX;
+            int drawStartX = paddingLeft + i * POKER_GAP_PX + mDrawCenterStartPos;
 
-            if (mWeSelectedPokerIndex.contains(i)) {
+            if (mWeSelectedPokerList.contains(i)) {
                 paddingTop = 0;
             } else {
                 paddingTop = getPaddingTop();
             }
 
             Rect dst = new Rect(drawStartX, paddingTop, POKER_DRAW_WIDTH + drawStartX, height + paddingTop);
-            VLog.info("src " + mPicRect.toString() + "  dst " + dst.toString());
+            VLog.debug("src " + mPicRect.toString() + "  dst " + dst.toString());
             canvas.drawBitmap(bitmap, mPicRect, dst, mBitmapPaint);
         }
 
@@ -202,22 +219,30 @@ public class PokerView extends View {
 
     private int mSelectPokerIndex = 0;
 
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         float fx = event.getX();
         float fy = event.getY();
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             int x = Math.round(fx);
-            int index = (x - getPaddingLeft())/ POKER_GAP_PX;
+            int index = (x - getPaddingLeft() - mDrawCenterStartPos)/ POKER_GAP_PX;
+
+            int totalUsedSpace = (mDrawingPokers.size() + 3) * POKER_GAP_PX;
+            // for draw pokers in center.
+
+            if (index < 0 || x > (mDrawCenterStartPos + totalUsedSpace))
+                return false;
 
             if (index > (mDrawingPokers.size() - 1) && x < getPaddingLeft() + (index * POKER_GAP_PX) + mBitmapWidth)
                 index = mDrawingPokers.size() - 1;
 
+
             VLog.info("We Clicked the poker index " + index);
-            if (mWeSelectedPokerIndex.contains(index)) {
-                mWeSelectedPokerIndex.remove(Integer.valueOf(index));
+            if (mWeSelectedPokerList.contains(index)) {
+                mWeSelectedPokerList.remove(Integer.valueOf(index));
             } else {
-                mWeSelectedPokerIndex.add(index);
+                mWeSelectedPokerList.add(index);
             }
             mSelectPokerIndex = index;
             invalidate();
