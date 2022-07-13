@@ -116,12 +116,16 @@
                 android:layout_height="0dp"
                 android:background="@color/teal_200"
                 android:orientation="horizontal">
-                <TextView
+
+                <com.rockzhang.red2.view.PokerView
+                    android:paddingHorizontal="40dp"
+                    android:paddingBottom="3dp"
+                    android:paddingTop="3dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="Center panel"/>
+                    android:id="@+id/center_poker_view">
+
+                </com.rockzhang.red2.view.PokerView>
 
             </LinearLayout>
         </LinearLayout>
@@ -191,30 +195,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/bottom_name"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/bottom_message"/>
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="StartGame"
+                android:text="开始"
                 android:id="@+id/start_game_button"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Handout"
-                android:id="@+id/handout_button"/>
+                android:text="抢2"
+                android:id="@+id/do_action_button"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Single"
-                android:id="@+id/single_one_button"/>
+                android:text="不抢"
+                android:id="@+id/do_negative_button"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Share2"
-                android:id="@+id/share_button"
-                />
+
 
         </LinearLayout>
 
