@@ -8,5 +8,4 @@ import java.util.List;
 public interface IClientGamePresenter {
     void login(String wsAddress, String loginName);
     void newPlayerStatus(PlayerStatus status, List<Integer> cards);
-    void setUIView(IGameView view);
 }

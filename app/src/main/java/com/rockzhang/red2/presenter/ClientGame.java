@@ -19,38 +19,16 @@ public class ClientGame implements  IClientGamePresenter {
     private NetworkHandler mNetworkHandler;
     private IGameView mUIView;
     private String mPlayerName;
-
-    public List<Integer> getOwnedPokers() {
-        return mOwnedPokers;
-    }
-
-    private UIPanel currentUser() {
-        return mUIView.getUIPanelList().get(0);
-    }
-
-    private void errorHandler(String message, boolean shouldDialog) {
-        VLog.error("ClientGame errorHandler message " + message);
-        currentUser().showMessage(message, shouldDialog);
-    }
-
-    public void setOwnedPokers(List<Integer> mOwnedPokers) {
-        this.mOwnedPokers = mOwnedPokers;
-    }
-
-    private List<Integer> mOwnedPokers = new ArrayList<>(32);
-
-    private JSONArray mJsonArray;
-
-    public ClientGame() {
-        mWeSeatPos = -1;
-    }
-
-    public void setUIView(IGameView view) {
-        mUIView = view;
-    }
-
     private int mWeSeatPos;
     private int mPlayerStatus;
+    private List<Integer> mOwnedPokers = new ArrayList<>(32);
+
+    public ClientGame(IGameView view) {
+        mUIView = view;
+        mWeSeatPos = -1;
+        mPlayerStatus = PlayerStatus.Offline.getValue();
+    }
+
     NetworkHandler.MessageCallback messageCallback = new NetworkHandler.MessageCallback() {
         @Override
         public void OnReceivedMessage(JSONObject obj) {
@@ -88,9 +66,13 @@ public class ClientGame implements  IClientGamePresenter {
 
                             if (playerStatus == PlayerStatus.Logined.getValue() && playerName.equals(mPlayerName)) {
                                 mUIView.OnLoginResult(true, "We seat pos " + seatPos);
-                                mPlayerStatus = playerStatus;
                                 mWeSeatPos = seatPos;
                                 return;
+                            }
+
+                            if (playerName.equals(mPlayerName)) {
+                                mPlayerStatus = playerStatus;
+                                SetButtonState();
                             }
                         }
 
@@ -105,23 +87,51 @@ public class ClientGame implements  IClientGamePresenter {
                             mUIView.getUIPanelList().get((activePos + 4 - mWeSeatPos) % 4).showTimer(true);
                         }
 
+
+                        JSONArray centerJsonArray = obj.getJSONArray("center_pokers");
+                        List<Integer> centerDispatchPokers = new ArrayList<>(centerJsonArray.length());
+                        for (int j=0;j<centerJsonArray.length();j++){
+                            centerDispatchPokers.add((Integer) centerJsonArray.get(j));
+                        }
+
+                        mUIView.getUIPanelList().get(4).showPokers(centerDispatchPokers);
+
                         for (int i = 0; i < list.length(); i++) {
                             JSONObject singleUser = list.getJSONObject(i);
                             String playerName = singleUser.getString("player_name");
                             int seatPos = singleUser.getInt("position");
                             int playerStatus = singleUser.getInt("status");
+                            String message = singleUser.getString("message");
 
                             int layoutIndex = (seatPos + 4 - mWeSeatPos) % 4;
                             if (playerStatus == PlayerStatus.Logined.getValue() || playerStatus == PlayerStatus.Started.getValue()) {
                                 mUIView.getUIPanelList().get(layoutIndex).showName(playerName);
-                                String message =((playerStatus == PlayerStatus.Logined.getValue()) ? "online":"ready");
                                 mUIView.getUIPanelList().get(layoutIndex).showMessage(message, false);
-                            }
+                            } else if ( playerStatus == PlayerStatus.SingleOne.getValue() ||
+                                        playerStatus == PlayerStatus.NoTake.getValue() ||
 
+                                        playerStatus == PlayerStatus.Share2.getValue() ||
+                                        playerStatus == PlayerStatus.NoShare.getValue() ||
+
+                                        playerStatus == PlayerStatus.Handout.getValue() ||
+                                        playerStatus == PlayerStatus.RunOut.getValue()
+                                        ) {
+
+
+                                JSONArray jsonArray = singleUser.getJSONArray("pokers");
+                                List<Integer> dispatchPokers = new ArrayList<>(jsonArray.length());
+                                for (int j=0;j<jsonArray.length();j++){
+                                    dispatchPokers.add((Integer) jsonArray.get(j));
+                                }
+
+                                if (-1 < seatPos && seatPos < 4) {
+                                    mUIView.getUIPanelList().get(layoutIndex).showName(playerName);
+                                    mUIView.getUIPanelList().get(layoutIndex).showMessage(message, false);
+                                    mUIView.getUIPanelList().get(layoutIndex).showPokers(dispatchPokers);
+                                }
+                            }
                         }
                     }
-
-                    // mUIView.OnLoginResult(false, "unknown reason.");
                 }
 
             } catch (Exception e) {
@@ -130,6 +140,36 @@ public class ClientGame implements  IClientGamePresenter {
             }
         }
     };
+
+
+    public List<Integer> getOwnedPokers() {
+        return mOwnedPokers;
+    }
+
+    private UIPanel currentUser() {
+        return mUIView.getUIPanelList().get(0);
+    }
+
+    private void errorHandler(String message, boolean shouldDialog) {
+        VLog.error("ClientGame errorHandler message " + message);
+        currentUser().showMessage(message, shouldDialog);
+    }
+
+    public void setOwnedPokers(List<Integer> mOwnedPokers) {
+        this.mOwnedPokers = mOwnedPokers;
+    }
+
+    public void SetButtonState() {
+        if (mPlayerStatus == PlayerStatus.Logined.getValue()) {
+        } else if  (mPlayerStatus == PlayerStatus.Started.getValue()) {
+        } else if  (mPlayerStatus == PlayerStatus.SingleOne.getValue()) {
+        } else if  (mPlayerStatus == PlayerStatus.NoTake.getValue()) {
+        } else if  (mPlayerStatus == PlayerStatus.Share2.getValue()) {
+        } else if  (mPlayerStatus == PlayerStatus.NoShare.getValue()) {
+        } else if  (mPlayerStatus == PlayerStatus.Handout.getValue()) {
+        } else if  (mPlayerStatus == PlayerStatus.RunOut.getValue()) {
+        }
+    }
 
     @Override
     public void login(String wsAddress, String loginName) {
@@ -159,10 +199,10 @@ public class ClientGame implements  IClientGamePresenter {
             status = PlayerStatus.RunOut;
         }
 
-        mJsonArray = new JSONArray();
+        JSONArray jsonArray = new JSONArray();
         if (handoutPokers) {
             for (Integer x : cards) {
-                mJsonArray.put(x.intValue());
+                jsonArray.put(x.intValue());
             }
         }
 
@@ -170,7 +210,7 @@ public class ClientGame implements  IClientGamePresenter {
         try {
             sendJsonObject.put("player_name", mPlayerName);
             sendJsonObject.put("action", "status");
-            sendJsonObject.put("handout_pokers", mJsonArray);
+            sendJsonObject.put("handout_pokers", jsonArray);
             sendJsonObject.put("req_status", status.getValue());
         } catch (Exception e) {
             errorHandler(e.toString(), false);

@@ -91,16 +91,16 @@ public class PokerView extends View {
 
     public PokerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mDrawingPokers.add(3);
-        mDrawingPokers.add(4);
-        mDrawingPokers.add(7);
-        mDrawingPokers.add(13);
-        mDrawingPokers.add(18);
-        mDrawingPokers.add(24);
-        mDrawingPokers.add(32);
-        mDrawingPokers.add(48);
-        mDrawingPokers.add(48);
-        Collections.sort(mDrawingPokers,  Collections.reverseOrder());
+//        mDrawingPokers.add(3);
+//        mDrawingPokers.add(4);
+//        mDrawingPokers.add(7);
+//        mDrawingPokers.add(13);
+//        mDrawingPokers.add(18);
+//        mDrawingPokers.add(24);
+//        mDrawingPokers.add(32);
+//        mDrawingPokers.add(48);
+//        mDrawingPokers.add(48);
+//        Collections.sort(mDrawingPokers,  Collections.reverseOrder());
 
         init();
     }

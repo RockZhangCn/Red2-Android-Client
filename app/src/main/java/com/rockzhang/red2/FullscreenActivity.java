@@ -307,6 +307,35 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         mUIPanelList.add(topPanel);
         mUIPanelList.add(leftPanel);
 
+        UIPanel centerPanel = new UIPanel() {
+            @Override
+            public void showName(String name) {
+
+            }
+
+            @Override
+            public void showMessage(String message, boolean shouldDialog) {
+
+            }
+
+            @Override
+            public void showPokers(List<Integer> cards) {
+                mUIHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCenterPokerView.setDisplayCards(cards);
+                    }
+                });
+            }
+
+            @Override
+            public void showTimer(Boolean show) {
+
+            }
+        };
+
+        mUIPanelList.add(centerPanel);
+
         // Hide all.
         for (int i = 1; i < mUIPanelList.size(); i ++) {
             mUIPanelList.get(i).showMessage("",false);
@@ -331,8 +360,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         mPlayerName = startIntent.getStringExtra("player_name");
         mServerAddress = startIntent.getStringExtra("server_address");
 
-        mPresenter = new ClientGame();
-        mPresenter.setUIView(this);
+        mPresenter = new ClientGame(this);
         mPresenter.login(mServerAddress, mPlayerName);
 
 
