@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/content_view"
     android:background="@color/light_blue_600"
     android:gravity="center|center_horizontal|center_vertical"
     android:orientation="vertical">
@@ -16,53 +16,54 @@
         <!--  Left user -->
         <LinearLayout
             android:layout_width="120dp"
-            android:background="@android:color/holo_blue_light"
             android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_light"
             android:orientation="vertical">
+
             <TextView
+                android:id="@+id/left_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
-                android:text="left_name"
-                android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:id="@+id/left_user_name">
-            </TextView>
+                android:text="left_name"></TextView>
+
             <TextView
+                android:id="@+id/left_user_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="left_message"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:id="@+id/left_user_message">
-            </TextView>
+                android:text="left_message"></TextView>
+
             <ImageView
+                android:id="@+id/left_user_timer_img"
                 android:layout_width="@dimen/timer_width"
                 android:layout_height="@dimen/timer_width"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:src="@raw/timer"
-                android:id="@+id/left_user_timer_img"/>
+                android:src="@raw/timer" />
 
             <FrameLayout
-                android:layout_height="0dp"
                 android:layout_width="@dimen/poker_width"
-                android:layout_weight="1"
+                android:layout_height="0dp"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                >
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
                 <ImageView
+                    android:id="@+id/left_user_poker_img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@raw/green_back"
-                    android:id="@+id/left_user_poker_img"/>
+                    android:src="@raw/green_back" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="5"/>
+                    android:text="5" />
             </FrameLayout>
 
 
@@ -79,63 +80,65 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="4"
                 android:layout_gravity="center_horizontal"
+                android:layout_weight="4"
                 android:background="@color/purple_200"
                 android:orientation="horizontal">
+
                 <TextView
+                    android:id="@+id/top_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:layout_marginLeft="80dp"
                     android:layout_weight="1"
-                    android:text="top_user"
-                    android:id="@+id/top_user_name">
-                </TextView>
+                    android:gravity="center"
+                    android:text="top_user"></TextView>
 
                 <ImageView
+                    android:id="@+id/top_user_timer_img"
                     android:layout_width="@dimen/timer_width"
                     android:layout_height="@dimen/timer_width"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_gravity="center"
-                    android:src="@raw/timer"
-                    android:id="@+id/top_user_timer_img"/>
+                    android:src="@raw/timer" />
+
                 <ImageView
+                    android:id="@+id/top_user_poker_img"
                     android:layout_width="@dimen/poker_width"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_gravity="center"
-                    android:src="@raw/green_back"
-                    android:id="@+id/top_user_poker_img"/>
+                    android:src="@raw/green_back" />
+
                 <TextView
+                    android:id="@+id/top_user_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:layout_marginRight="80dp"
                     android:layout_gravity="center"
-                    android:text="top_message"
-                    android:id="@+id/top_user_message">
-                </TextView>
+                    android:layout_marginRight="80dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="top_message"></TextView>
             </LinearLayout>
             <!--Center panel -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_weight="5"
                 android:layout_height="0dp"
+                android:layout_weight="5"
                 android:background="@color/teal_200"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="Center panel"/>
+                    android:text="Center panel" />
 
             </LinearLayout>
         </LinearLayout>
@@ -143,41 +146,43 @@
         <!-- Right user -->
         <LinearLayout
             android:layout_width="120dp"
-            android:background="@color/colorLayoutBackground"
             android:layout_height="match_parent"
+            android:background="@color/colorLayoutBackground"
             android:orientation="vertical">
+
             <TextView
+                android:id="@+id/right_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="right_name"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
-                android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:id="@+id/right_user_name">
-            </TextView>
+                android:text="right_name"></TextView>
+
             <TextView
+                android:id="@+id/right_user_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="right_message"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:id="@+id/right_user_message">
-            </TextView>
+                android:text="right_message"></TextView>
+
             <ImageView
+                android:id="@+id/right_user_timer_img"
                 android:layout_width="@dimen/timer_width"
                 android:layout_height="@dimen/timer_width"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:src="@raw/timer"
-                android:id="@+id/right_user_timer_img"/>
+                android:src="@raw/timer" />
+
             <ImageView
+                android:id="@+id/right_user_poker_img"
                 android:layout_width="@dimen/poker_width"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:src="@raw/green_back"
-                android:id="@+id/right_user_poker_img"/>
+                android:src="@raw/green_back" />
 
         </LinearLayout>
 
@@ -188,12 +193,13 @@
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Bottom panel"/>
+            android:text="Bottom panel" />
 
     </LinearLayout>
 

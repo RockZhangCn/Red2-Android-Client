@@ -14,21 +14,13 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientGame implements  IClientGamePresenter {
+public class ClientGame implements IClientGamePresenter {
 
     private NetworkHandler mNetworkHandler;
     private IGameView mUIView;
     private String mPlayerName;
     private int mWeSeatPos;
     private int mPlayerStatus;
-    private List<Integer> mOwnedPokers = new ArrayList<>(32);
-
-    public ClientGame(IGameView view) {
-        mUIView = view;
-        mWeSeatPos = -1;
-        mPlayerStatus = PlayerStatus.Offline.getValue();
-    }
-
     NetworkHandler.MessageCallback messageCallback = new NetworkHandler.MessageCallback() {
         @Override
         public void OnReceivedMessage(JSONObject obj) {
@@ -90,7 +82,7 @@ public class ClientGame implements  IClientGamePresenter {
 
                         JSONArray centerJsonArray = obj.getJSONArray("center_pokers");
                         List<Integer> centerDispatchPokers = new ArrayList<>(centerJsonArray.length());
-                        for (int j=0;j<centerJsonArray.length();j++){
+                        for (int j = 0; j < centerJsonArray.length(); j++) {
                             centerDispatchPokers.add((Integer) centerJsonArray.get(j));
                         }
 
@@ -107,20 +99,20 @@ public class ClientGame implements  IClientGamePresenter {
                             if (playerStatus == PlayerStatus.Logined.getValue() || playerStatus == PlayerStatus.Started.getValue()) {
                                 mUIView.getUIPanelList().get(layoutIndex).showName(playerName);
                                 mUIView.getUIPanelList().get(layoutIndex).showMessage(message, false);
-                            } else if ( playerStatus == PlayerStatus.SingleOne.getValue() ||
-                                        playerStatus == PlayerStatus.NoTake.getValue() ||
+                            } else if (playerStatus == PlayerStatus.SingleOne.getValue() ||
+                                    playerStatus == PlayerStatus.NoTake.getValue() ||
 
-                                        playerStatus == PlayerStatus.Share2.getValue() ||
-                                        playerStatus == PlayerStatus.NoShare.getValue() ||
+                                    playerStatus == PlayerStatus.Share2.getValue() ||
+                                    playerStatus == PlayerStatus.NoShare.getValue() ||
 
-                                        playerStatus == PlayerStatus.Handout.getValue() ||
-                                        playerStatus == PlayerStatus.RunOut.getValue()
-                                        ) {
+                                    playerStatus == PlayerStatus.Handout.getValue() ||
+                                    playerStatus == PlayerStatus.RunOut.getValue()
+                            ) {
 
 
                                 JSONArray jsonArray = singleUser.getJSONArray("pokers");
                                 List<Integer> dispatchPokers = new ArrayList<>(jsonArray.length());
-                                for (int j=0;j<jsonArray.length();j++){
+                                for (int j = 0; j < jsonArray.length(); j++) {
                                     dispatchPokers.add((Integer) jsonArray.get(j));
                                 }
 
@@ -140,10 +132,20 @@ public class ClientGame implements  IClientGamePresenter {
             }
         }
     };
+    private List<Integer> mOwnedPokers = new ArrayList<>(32);
 
+    public ClientGame(IGameView view) {
+        mUIView = view;
+        mWeSeatPos = -1;
+        mPlayerStatus = PlayerStatus.Offline.getValue();
+    }
 
     public List<Integer> getOwnedPokers() {
         return mOwnedPokers;
+    }
+
+    public void setOwnedPokers(List<Integer> mOwnedPokers) {
+        this.mOwnedPokers = mOwnedPokers;
     }
 
     private UIPanel currentUser() {
@@ -155,19 +157,15 @@ public class ClientGame implements  IClientGamePresenter {
         currentUser().showMessage(message, shouldDialog);
     }
 
-    public void setOwnedPokers(List<Integer> mOwnedPokers) {
-        this.mOwnedPokers = mOwnedPokers;
-    }
-
     public void SetButtonState() {
         if (mPlayerStatus == PlayerStatus.Logined.getValue()) {
-        } else if  (mPlayerStatus == PlayerStatus.Started.getValue()) {
-        } else if  (mPlayerStatus == PlayerStatus.SingleOne.getValue()) {
-        } else if  (mPlayerStatus == PlayerStatus.NoTake.getValue()) {
-        } else if  (mPlayerStatus == PlayerStatus.Share2.getValue()) {
-        } else if  (mPlayerStatus == PlayerStatus.NoShare.getValue()) {
-        } else if  (mPlayerStatus == PlayerStatus.Handout.getValue()) {
-        } else if  (mPlayerStatus == PlayerStatus.RunOut.getValue()) {
+        } else if (mPlayerStatus == PlayerStatus.Started.getValue()) {
+        } else if (mPlayerStatus == PlayerStatus.SingleOne.getValue()) {
+        } else if (mPlayerStatus == PlayerStatus.NoTake.getValue()) {
+        } else if (mPlayerStatus == PlayerStatus.Share2.getValue()) {
+        } else if (mPlayerStatus == PlayerStatus.NoShare.getValue()) {
+        } else if (mPlayerStatus == PlayerStatus.Handout.getValue()) {
+        } else if (mPlayerStatus == PlayerStatus.RunOut.getValue()) {
         }
     }
 

@@ -17,29 +17,8 @@ import java.net.URI;
 
 
 public class NetworkHandler extends Handler {
-    private  WebSocketClient mClientWS;
-    private  MessageCallback mMessageCallback;
-
-    public interface MessageCallback {
-        void OnReceivedMessage(JSONObject obj) ;
-    }
-
-    private void errorHandler(String errorStr) {
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("action", "network_issue");
-            obj.put("position", -1);
-            obj.put("pokers", new JSONArray());
-            obj.put("status", -1);
-            obj.put("message", errorStr);
-        } catch (Exception e) {
-            VLog.error("Websocket Close exception " + e.toString());
-        }
-
-        VLog.info("WS received reason " + errorStr);
-        mMessageCallback.OnReceivedMessage(obj);
-    }
-
+    private WebSocketClient mClientWS;
+    private MessageCallback mMessageCallback;
 
     public NetworkHandler(@NonNull Looper looper, URI connAddr, MessageCallback callback) {
         super(looper);
@@ -60,7 +39,7 @@ public class NetworkHandler extends Handler {
             public void onClose(int code, String reason, boolean remote) {
                 VLog.info("WS onClose called");
                 String errorStr = String.format("%s closed WS with code %d and reason %s",
-                        remote?"Server":"Client", code, reason);
+                        remote ? "Server" : "Client", code, reason);
                 errorHandler(errorStr);
             }
 
@@ -72,6 +51,22 @@ public class NetworkHandler extends Handler {
         };
 
         startWebSocket();
+    }
+
+    private void errorHandler(String errorStr) {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("action", "network_issue");
+            obj.put("position", -1);
+            obj.put("pokers", new JSONArray());
+            obj.put("status", -1);
+            obj.put("message", errorStr);
+        } catch (Exception e) {
+            VLog.error("Websocket Close exception " + e.toString());
+        }
+
+        VLog.info("WS received reason " + errorStr);
+        mMessageCallback.OnReceivedMessage(obj);
     }
 
     public void startWebSocket() {
@@ -107,5 +102,9 @@ public class NetworkHandler extends Handler {
                 }
             }
         });
+    }
+
+    public interface MessageCallback {
+        void OnReceivedMessage(JSONObject obj);
     }
 }

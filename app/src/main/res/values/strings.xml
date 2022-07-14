@@ -5,7 +5,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="app_ver">V1.0</string>
     <string name="app_author">作者：rock.zhang.cn@gmail.com </string>
-    
+
     <string name="start_game">开始游戏</string>
     <string name="restart">再玩一局</string>
     <string name="callin_lineup">调入布局</string>
@@ -17,17 +17,17 @@
     <string name="completed">完成！</string>
     <string name="cancelled">取消！</string>
     <string name="err_null_lineup">错误提示：布局文件为空！</string>
-    
+
     <string name="victory">胜利！</string>
     <string name="failed">失败！</string>
-    
+
     <string name="listview_lineup">布局</string>
     <string name="listview_lineup_null"> (空)</string>
 
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="quit_confirmation">确定退出程序吗?</string>
-    
+
     <string name="about_info">祝国家繁荣昌盛，兵强马壮。</string>
     <string name="blank_info"></string>
 </resources>

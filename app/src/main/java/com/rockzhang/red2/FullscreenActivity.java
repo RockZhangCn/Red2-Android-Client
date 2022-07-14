@@ -5,14 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Contacts;
-import android.provider.ContactsContract;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
@@ -29,8 +26,6 @@ import com.rockzhang.red2.role.PlayerStatus;
 import com.rockzhang.red2.view.IGameView;
 import com.rockzhang.red2.view.PokerView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,23 +34,19 @@ import java.util.List;
  * status bar and navigation/system bar) with user interaction.
  */
 public class FullscreenActivity extends AppCompatActivity implements IGameView, View.OnClickListener {
+    Handler mUIHandler = new Handler(Looper.getMainLooper());
     private View mContentView;
     private String mServerAddress;
     private String mPlayerName;
     private IClientGamePresenter mPresenter;
-
     private PokerView mBottomPokerView;
     private PokerView mCenterPokerView;
-
     private Button mStartGameButton;
     private Button mDoActionButton;
     private Button mDoNegativeButton;
     private TextView mBottomMessage;
     private TextView mBottomName;
-
     private List<UIPanel> mUIPanelList = new ArrayList<>(4);
-
-    Handler mUIHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onResume() {
@@ -185,7 +176,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                 mUIHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        topPokerImg.setVisibility(cards.size() > 0 ? View.VISIBLE: View.INVISIBLE);
+                        topPokerImg.setVisibility(cards.size() > 0 ? View.VISIBLE : View.INVISIBLE);
                         if (cards.size() <= 5 && cards.size() > 0) {
                             topPokerNum.setText(String.valueOf(cards.size()));
                         } else {
@@ -337,8 +328,8 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         mUIPanelList.add(centerPanel);
 
         // Hide all.
-        for (int i = 1; i < mUIPanelList.size(); i ++) {
-            mUIPanelList.get(i).showMessage("",false);
+        for (int i = 1; i < mUIPanelList.size(); i++) {
+            mUIPanelList.get(i).showMessage("", false);
             mUIPanelList.get(i).showName("");
             mUIPanelList.get(i).showPokers(new ArrayList<Integer>());
             mUIPanelList.get(i).showTimer(false);

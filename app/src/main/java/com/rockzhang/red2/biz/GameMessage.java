@@ -1,6 +1,7 @@
 package com.rockzhang.red2.biz;
 
 import com.rockzhang.red2.log.VLog;
+
 import org.json.JSONObject;
 
 public class GameMessage {

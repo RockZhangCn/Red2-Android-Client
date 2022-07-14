@@ -7,9 +7,9 @@
     <application
         android:name=".app.Red2App"
         android:allowBackup="true"
-        android:hardwareAccelerated="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:roundIcon="@drawable/icon"
@@ -20,14 +20,14 @@
             android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
+            android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.MyApplication.Fullscreen">
-        </activity>
+            android:theme="@style/Theme.MyApplication.Fullscreen"></activity>
 
-        <activity android:name=".MainActivity"
-            android:label="@string/app_name"
+        <activity
+            android:name=".MainActivity"
             android:exported="true"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyApplication">
             <intent-filter>

@@ -2,8 +2,6 @@ package com.rockzhang.red2.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -43,7 +41,7 @@ public class Red2App extends Application {
     }
 
     public int[] getScreenInfo() {
-        WindowManager mWindowManager  = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager mWindowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
         mWindowManager.getDefaultDisplay().getMetrics(metrics);
         float density = metrics.density;
@@ -54,8 +52,8 @@ public class Red2App extends Application {
         int screenWidth = (int) (width / density);  // 屏幕宽度(dp)
         int screenHeight = (int) (height / density);// 屏幕高度(dp)
         VLog.info("density is " + density + " width height is " + width + "x" + height + " screenWidth = " + screenWidth + "x"
-         + screenHeight);
-        return new int[] {width, height};
+                + screenHeight);
+        return new int[]{width, height};
     }
 
     @Override

@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent">
 
-    
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp"
         android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        >
+        android:paddingRight="15dp"
+        android:paddingBottom="20dp">
 
-		<ListView
-			android:id="@+id/lineup_listview"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:fadingEdge="none"
-			android:focusable="true"></ListView>
-        
-        <TextView android:id="@+id/text" 
-			android:text="@string/blank_info"
-			android:visibility="visible" 
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:layout_centerInParent="true"
-			android:gravity="center_horizontal" 
-			android:textColor="#ff000000"
-			/>
+        <ListView
+            android:id="@+id/lineup_listview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fadingEdge="none"
+            android:focusable="true"></ListView>
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:text="@string/blank_info"
+            android:textColor="#ff000000"
+            android:visibility="visible" />
     </RelativeLayout>
 </FrameLayout>

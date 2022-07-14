@@ -32,15 +32,14 @@ import com.rockzhang.red2.log.VLog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class PokerView extends View {
 
+    public static final int POKER_GAP_PX = dp2px(Red2App.getInstance(), 24);
     private static boolean sPokerBitmapInitialized = false;
     private static Bitmap[] PokerBitmap = new Bitmap[52];
-
-    private static int[] PokerBitmapIndex = new int[] {
+    private static int[] PokerBitmapIndex = new int[]{
             R.drawable.poker_0, R.drawable.poker_1, R.drawable.poker_2, R.drawable.poker_3,
             R.drawable.poker_4, R.drawable.poker_5, R.drawable.poker_6, R.drawable.poker_7,
             R.drawable.poker_8, R.drawable.poker_9, R.drawable.poker_10, R.drawable.poker_11,
@@ -55,20 +54,8 @@ public class PokerView extends View {
             R.drawable.poker_44, R.drawable.poker_45, R.drawable.poker_46, R.drawable.poker_47,
             R.drawable.poker_48, R.drawable.poker_49, R.drawable.poker_50, R.drawable.poker_51
     };
-
+    private final List<Integer> mWeSelectedPokerList = new ArrayList<>(24);
     private int mDrawCenterStartPos = 0;
-
-    public static void LoadPokerBitmap(Context context) {
-        if (sPokerBitmapInitialized)
-            return;
-
-        sPokerBitmapInitialized = true;
-
-        for(int i = 0; i < PokerBitmapIndex.length; i++)
-            PokerBitmap[i] = BitmapFactory.decodeResource(context.getResources(), PokerBitmapIndex[i]);
-    }
-
-    public static final int POKER_GAP_PX =  dp2px(Red2App.getInstance(), 24);
     private int POKER_DRAW_WIDTH = 0;
 
     private int mBitmapWidth = 0;
@@ -76,10 +63,8 @@ public class PokerView extends View {
 
     private Paint mBitmapPaint;
     private Rect mPicRect;
-
-    private final List<Integer> mWeSelectedPokerList = new ArrayList<>(24);
-
     private List<Integer> mDrawingPokers = new ArrayList<>(32);
+    private int mSelectPokerIndex = 0;
 
     public PokerView(Context context) {
         this(context, null);
@@ -103,6 +88,26 @@ public class PokerView extends View {
 //        Collections.sort(mDrawingPokers,  Collections.reverseOrder());
 
         init();
+    }
+
+    public static void LoadPokerBitmap(Context context) {
+        if (sPokerBitmapInitialized)
+            return;
+
+        sPokerBitmapInitialized = true;
+
+        for (int i = 0; i < PokerBitmapIndex.length; i++)
+            PokerBitmap[i] = BitmapFactory.decodeResource(context.getResources(), PokerBitmapIndex[i]);
+    }
+
+    private static int dp2px(Context context, float dp) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
+    private static int sp2px(Context context, float sp) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (sp * fontScale + 0.5f);
     }
 
     private void init() {
@@ -217,8 +222,6 @@ public class PokerView extends View {
         // mTotalHeight = h;
     }
 
-    private int mSelectPokerIndex = 0;
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float fx = event.getX();
@@ -226,7 +229,7 @@ public class PokerView extends View {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             int x = Math.round(fx);
-            int index = (x - getPaddingLeft() - mDrawCenterStartPos)/ POKER_GAP_PX;
+            int index = (x - getPaddingLeft() - mDrawCenterStartPos) / POKER_GAP_PX;
 
             int totalUsedSpace = (mDrawingPokers.size() + 3) * POKER_GAP_PX;
             // for draw pokers in center.
@@ -249,16 +252,6 @@ public class PokerView extends View {
         }
 
         return true;
-    }
-
-    private static int dp2px(Context context, float dp) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
-    }
-
-    private static int sp2px(Context context, float sp) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (sp * fontScale + 0.5f);
     }
 
 }

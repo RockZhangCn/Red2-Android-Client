@@ -1,25 +1,14 @@
 package com.rockzhang.red2;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.rockzhang.red2.log.VLog;
-import com.rockzhang.red2.model.UIPanel;
-import com.rockzhang.red2.presenter.ClientGame;
-import com.rockzhang.red2.presenter.IClientGamePresenter;
 import com.rockzhang.red2.utils.SPUtils;
-import com.rockzhang.red2.view.IGameView;
-
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -73,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
 
 
 }
