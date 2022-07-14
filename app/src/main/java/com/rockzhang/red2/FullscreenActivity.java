@@ -359,6 +359,19 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
     }
 
     @Override
+    public void OnPlayerStatusChanged(int playStatus, boolean isActive) {
+        if (playStatus == PlayerStatus.Logined.getValue()) {
+        } else if (playStatus == PlayerStatus.Started.getValue()) {
+        } else if (playStatus == PlayerStatus.SingleOne.getValue()) {
+        } else if (playStatus == PlayerStatus.NoTake.getValue()) {
+        } else if (playStatus == PlayerStatus.Share2.getValue()) {
+        } else if (playStatus == PlayerStatus.NoShare.getValue()) {
+        } else if (playStatus == PlayerStatus.Handout.getValue()) {
+        } else if (playStatus == PlayerStatus.RunOut.getValue()) {
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_game_button:

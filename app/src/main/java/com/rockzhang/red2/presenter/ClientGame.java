@@ -46,6 +46,10 @@ public class ClientGame implements IClientGamePresenter {
                     VLog.warning("We get error network_issue, will show Dialog");
                     mUIView.OnLoginResult(false, obj.getString("message"));
                 } else if (action.equalsIgnoreCase("status_broadcast")) {
+                    int activePos = obj.getInt("active_pos");
+                    if (-1 < activePos && activePos < 4) {
+                        mUIView.getUIPanelList().get((activePos + 4 - mWeSeatPos) % 4).showTimer(true);
+                    }
 
                     // login handler
                     if (obj.has("status_all")) {
@@ -64,7 +68,7 @@ public class ClientGame implements IClientGamePresenter {
 
                             if (playerName.equals(mPlayerName)) {
                                 mPlayerStatus = playerStatus;
-                                SetButtonState();
+                                mUIView.OnPlayerStatusChanged(mPlayerStatus, mWeSeatPos == activePos);
                             }
                         }
 
@@ -74,10 +78,6 @@ public class ClientGame implements IClientGamePresenter {
                             VLog.info("We recovered from network issue , pos is " + mWeSeatPos);
                         }
 
-                        int activePos = obj.getInt("active_pos");
-                        if (-1 < activePos && activePos < 4) {
-                            mUIView.getUIPanelList().get((activePos + 4 - mWeSeatPos) % 4).showTimer(true);
-                        }
 
 
                         JSONArray centerJsonArray = obj.getJSONArray("center_pokers");
@@ -155,18 +155,6 @@ public class ClientGame implements IClientGamePresenter {
     private void errorHandler(String message, boolean shouldDialog) {
         VLog.error("ClientGame errorHandler message " + message);
         currentUser().showMessage(message, shouldDialog);
-    }
-
-    public void SetButtonState() {
-        if (mPlayerStatus == PlayerStatus.Logined.getValue()) {
-        } else if (mPlayerStatus == PlayerStatus.Started.getValue()) {
-        } else if (mPlayerStatus == PlayerStatus.SingleOne.getValue()) {
-        } else if (mPlayerStatus == PlayerStatus.NoTake.getValue()) {
-        } else if (mPlayerStatus == PlayerStatus.Share2.getValue()) {
-        } else if (mPlayerStatus == PlayerStatus.NoShare.getValue()) {
-        } else if (mPlayerStatus == PlayerStatus.Handout.getValue()) {
-        } else if (mPlayerStatus == PlayerStatus.RunOut.getValue()) {
-        }
     }
 
     @Override

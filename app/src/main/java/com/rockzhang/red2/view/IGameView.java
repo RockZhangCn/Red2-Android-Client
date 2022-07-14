@@ -8,4 +8,6 @@ public interface IGameView {
     List<UIPanel> getUIPanelList();
 
     void OnLoginResult(boolean success, String message);
+
+    void OnPlayerStatusChanged(int playsStatus, boolean isActive);
 }
