@@ -61,6 +61,8 @@ public class PokerView extends View {
     private int mBitmapWidth = 0;
     private int mBitmapHeight = 0;
 
+    private static Object sInitializeLock = new Object();
+
     private Paint mBitmapPaint;
     private Rect mPicRect;
     private List<Integer> mDrawingPokers = new ArrayList<>(32);
@@ -88,16 +90,6 @@ public class PokerView extends View {
 //        Collections.sort(mDrawingPokers,  Collections.reverseOrder());
 
         init();
-    }
-
-    public static void LoadPokerBitmap(Context context) {
-        if (sPokerBitmapInitialized)
-            return;
-
-        sPokerBitmapInitialized = true;
-
-        for (int i = 0; i < PokerBitmapIndex.length; i++)
-            PokerBitmap[i] = BitmapFactory.decodeResource(context.getResources(), PokerBitmapIndex[i]);
     }
 
     private static int dp2px(Context context, float dp) {
@@ -162,6 +154,20 @@ public class PokerView extends View {
         return result;
     }
 
+    public static void LoadPokerBitmap(Context context) {
+        if (sPokerBitmapInitialized)
+            return;
+
+        for (int i = 0; i < PokerBitmapIndex.length; i++)
+            PokerBitmap[i] = BitmapFactory.decodeResource(context.getResources(), PokerBitmapIndex[i]);
+
+        sPokerBitmapInitialized = true;
+
+        synchronized (sInitializeLock) {
+            sInitializeLock.notifyAll();
+        }
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -187,8 +193,16 @@ public class PokerView extends View {
         // for draw pokers in center.
         mDrawCenterStartPos = (width - totalUsedSpace) / 2;
         for (int i = 0; i < mDrawingPokers.size(); i++) {
-            //BitmapFactory.decodeResource(getResources(), PokerBitmapIndex[mDrawingPokers.get(i)]);
             Bitmap bitmap = PokerBitmap[mDrawingPokers.get(i)];
+            if (bitmap == null) {
+                synchronized (sInitializeLock) {
+                    try {
+                        sInitializeLock.wait();
+                    } catch (Exception e) {
+                    }
+                }
+                bitmap = PokerBitmap[mDrawingPokers.get(i)];
+            }
 
             if (POKER_DRAW_WIDTH == 0) {
                 mBitmapWidth = bitmap.getWidth();

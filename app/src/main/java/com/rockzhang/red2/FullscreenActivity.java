@@ -297,6 +297,9 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         mUIPanelList.add(topPanel);
         mUIPanelList.add(leftPanel);
 
+        // Center Panel.
+        mCenterPokerView = (PokerView) findViewById(R.id.center_poker_view);
+
         UIPanel centerPanel = new UIPanel() {
             @Override
             public void showName(String name) {
@@ -333,9 +336,6 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
             mUIPanelList.get(i).showPokers(new ArrayList<Integer>());
             mUIPanelList.get(i).showTimer(false);
         }
-
-        // Center Pannel.
-        mCenterPokerView = (PokerView) findViewById(R.id.center_poker_view);
 
         // Bottom Buttons.
         mStartGameButton = (Button) findViewById(R.id.start_game_button);
