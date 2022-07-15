@@ -86,7 +86,6 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
 
-
         // Left Panel
         TextView leftMessage = (TextView) findViewById(R.id.left_user_message);
         TextView leftName = (TextView) findViewById(R.id.left_user_name);
@@ -354,20 +353,39 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         mPresenter = new ClientGame(this);
         mPresenter.login(mServerAddress, mPlayerName);
 
-
+        mStartGameButton.setEnabled(false);
+        mDoActionButton.setEnabled(false);
+        mDoNegativeButton.setEnabled(false);
         VLog.info("PlayerName is " + mPlayerName + " Server address is " + mServerAddress);
     }
 
     @Override
     public void OnPlayerStatusChanged(int playStatus, boolean isActive) {
         if (playStatus == PlayerStatus.Logined.getValue()) {
+            mStartGameButton.setEnabled(true);
         } else if (playStatus == PlayerStatus.Started.getValue()) {
+            mStartGameButton.setEnabled(false);
         } else if (playStatus == PlayerStatus.SingleOne.getValue()) {
+            mDoActionButton.setEnabled(isActive);
+            mDoNegativeButton.setEnabled(isActive);
         } else if (playStatus == PlayerStatus.NoTake.getValue()) {
         } else if (playStatus == PlayerStatus.Share2.getValue()) {
+            mDoActionButton.setEnabled(isActive);
+            mDoNegativeButton.setText("分2");
+            mDoNegativeButton.setEnabled(isActive);
+            mDoNegativeButton.setText("偷鸡");
         } else if (playStatus == PlayerStatus.NoShare.getValue()) {
+            mDoActionButton.setEnabled(isActive);
+            mDoNegativeButton.setEnabled(isActive);
         } else if (playStatus == PlayerStatus.Handout.getValue()) {
+            mDoActionButton.setEnabled(isActive);
+            mDoNegativeButton.setText("出牌");
+            mDoNegativeButton.setEnabled(isActive);
+            mDoNegativeButton.setText("过牌");
+
         } else if (playStatus == PlayerStatus.RunOut.getValue()) {
+            mDoActionButton.setEnabled(false);
+            mDoNegativeButton.setEnabled(false);
         }
     }
 

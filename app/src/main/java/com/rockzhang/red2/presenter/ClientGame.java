@@ -72,13 +72,10 @@ public class ClientGame implements IClientGamePresenter {
                             }
                         }
 
-
                         if (mWeSeatPos == -1) {
                             mWeSeatPos = obj.getInt("recover_pos");
                             VLog.info("We recovered from network issue , pos is " + mWeSeatPos);
                         }
-
-
 
                         JSONArray centerJsonArray = obj.getJSONArray("center_pokers");
                         List<Integer> centerDispatchPokers = new ArrayList<>(centerJsonArray.length());
@@ -108,8 +105,6 @@ public class ClientGame implements IClientGamePresenter {
                                     playerStatus == PlayerStatus.Handout.getValue() ||
                                     playerStatus == PlayerStatus.RunOut.getValue()
                             ) {
-
-
                                 JSONArray jsonArray = singleUser.getJSONArray("pokers");
                                 List<Integer> dispatchPokers = new ArrayList<>(jsonArray.length());
                                 for (int j = 0; j < jsonArray.length(); j++) {
