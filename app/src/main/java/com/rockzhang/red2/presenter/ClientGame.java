@@ -153,6 +153,7 @@ public class ClientGame implements IClientGamePresenter {
 
     @Override
     public void login(String wsAddress, String loginName) {
+        VLog.info("ClientGame Login create new NetworkHandler");
         mPlayerName = loginName;
         mNetworkHandler = new NetworkHandler(NetworkThread.getInstance().getLooper(),
                 URI.create(wsAddress), messageCallback);

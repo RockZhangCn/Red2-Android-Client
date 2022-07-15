@@ -58,6 +58,15 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        VLog.info("FullscreenActivity onCreate run");
+        Intent startIntent = getIntent();
+        mPlayerName = startIntent.getStringExtra("player_name");
+        mServerAddress = startIntent.getStringExtra("server_address");
+
+        mPresenter = new ClientGame(this);
+        mPresenter.login(mServerAddress, mPlayerName);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//设置屏幕为横屏, 设置后会锁定方向
         //去除标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -347,12 +356,6 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         mDoActionButton.setOnClickListener(this);
         mDoNegativeButton.setOnClickListener(this);
 
-        Intent startIntent = getIntent();
-        mPlayerName = startIntent.getStringExtra("player_name");
-        mServerAddress = startIntent.getStringExtra("server_address");
-
-        mPresenter = new ClientGame(this);
-        mPresenter.login(mServerAddress, mPlayerName);
 
         mStartGameButton.setEnabled(false);
         mDoActionButton.setEnabled(false);
@@ -398,6 +401,12 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        VLog.info("FullscreenActivity onDestroy run in");
+        super.onDestroy();
     }
 
     @Override

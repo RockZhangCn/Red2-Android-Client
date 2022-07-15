@@ -40,7 +40,7 @@ public class NetworkHandler extends Handler {
                 VLog.info("WS onClose called");
                 String errorStr = String.format("%s closed WS with code %d and reason %s",
                         remote ? "Server" : "Client", code, reason);
-                errorHandler(errorStr);
+                //errorHandler(errorStr);
             }
 
             @Override
