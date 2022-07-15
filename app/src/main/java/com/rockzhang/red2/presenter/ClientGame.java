@@ -174,8 +174,8 @@ public class ClientGame implements IClientGamePresenter {
 
     @Override
     public void newPlayerStatus(PlayerStatus status, List<Integer> cards) {
-        boolean handoutPokers = !cards.isEmpty();
-        if ((getOwnedPokers().size() == cards.size()) && handoutPokers) {
+        boolean handoutPokers = (cards!=null) && !cards.isEmpty();
+        if (handoutPokers && (getOwnedPokers().size() == cards.size())) {
             status = PlayerStatus.RunOut;
         }
 

@@ -46,16 +46,16 @@
         android:layout_marginRight="24dp"
         android:layout_marginBottom="36dp"
         android:padding="4dp"
-        android:text="ws://love.rockzhang.com:5678"
+        android:text="ws://rockzhang.com:5678"
         android:textSize="@dimen/main_activity_font" />
 
     <Button
-        android:id="@+id/start_game_item"
+        android:id="@+id/login_game_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/main_activity_margin"
         android:padding="@dimen/main_activity_padding"
-        android:text="开始游戏"
+        android:text="登录游戏"
         android:textAlignment="center"
         android:textSize="@dimen/main_activity_font" />
 

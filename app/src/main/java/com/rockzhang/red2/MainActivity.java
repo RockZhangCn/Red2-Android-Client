@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        mStartGame = findViewById(R.id.start_game_item);
+        mStartGame = findViewById(R.id.login_game_item);
         mServerAddressWidget = findViewById(R.id.server_address);
         mPlayerNameWidget = findViewById(R.id.player_name);
         mStartGame.setOnClickListener(this);
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.start_game_item:
+            case R.id.login_game_item:
 
                 mServerAddress = mServerAddressWidget.getText().toString();
                 mPlayerName = mPlayerNameWidget.getText().toString();

@@ -47,6 +47,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
     private TextView mBottomMessage;
     private TextView mBottomName;
     private List<UIPanel> mUIPanelList = new ArrayList<>(4);
+    private int mPlayerStatus = PlayerStatus.Offline.getValue();
 
     @Override
     protected void onResume() {
@@ -361,6 +362,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
 
     @Override
     public void OnPlayerStatusChanged(final int playStatus, boolean isActive) {
+        mPlayerStatus = playStatus;
         mUIHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -372,14 +374,14 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                     mDoActionButton.setEnabled(isActive);
                     mDoNegativeButton.setEnabled(isActive);
                 } else if (playStatus == PlayerStatus.NoTake.getValue()) {
+                    VLog.warning("FullscreenActivity received NoTake State");
                 } else if (playStatus == PlayerStatus.Share2.getValue()) {
-                    mDoActionButton.setEnabled(isActive);
+                    mDoActionButton.setEnabled(true);
                     mDoNegativeButton.setText("分2");
-                    mDoNegativeButton.setEnabled(isActive);
+                    mDoNegativeButton.setEnabled(true);
                     mDoNegativeButton.setText("偷鸡");
                 } else if (playStatus == PlayerStatus.NoShare.getValue()) {
-                    mDoActionButton.setEnabled(isActive);
-                    mDoNegativeButton.setEnabled(isActive);
+                    VLog.warning("FullscreenActivity received NoShare State");
                 } else if (playStatus == PlayerStatus.Handout.getValue()) {
                     mDoActionButton.setEnabled(isActive);
                     mDoNegativeButton.setText("出牌");
@@ -389,6 +391,10 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                 } else if (playStatus == PlayerStatus.RunOut.getValue()) {
                     mDoActionButton.setEnabled(false);
                     mDoNegativeButton.setEnabled(false);
+                } else if (playStatus == PlayerStatus.GameOver.getValue()) {
+                    mDoActionButton.setEnabled(false);
+                    mDoNegativeButton.setEnabled(false);
+                    mStartGameButton.setEnabled(true);
                 }
             }
         });
@@ -401,10 +407,31 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                 mPresenter.newPlayerStatus(PlayerStatus.Started, new ArrayList<>());
                 break;
             case R.id.do_action_button:
-                mPresenter.newPlayerStatus(PlayerStatus.SingleOne, mBottomPokerView.getSelectedCards());
+                if (mPlayerStatus == PlayerStatus.SingleOne.getValue()) {
+                    mPresenter.newPlayerStatus(PlayerStatus.SingleOne, new ArrayList<Integer>());
+                } else if (mPlayerStatus == PlayerStatus.Share2.getValue()) {
+                    mPresenter.newPlayerStatus(PlayerStatus.Share2, new ArrayList<Integer>());
+
+                } else if (mPlayerStatus == PlayerStatus.Handout.getValue()) {
+                    mPresenter.newPlayerStatus(PlayerStatus.Handout, mBottomPokerView.getSelectedCards());
+                } else {
+                    VLog.warning("We click the Active Button in wrong status " + mPlayerStatus);
+                }
                 break;
+
             case R.id.do_negative_button:
-                mPresenter.newPlayerStatus(PlayerStatus.NoTake, new ArrayList<>());
+                if (mPlayerStatus == PlayerStatus.NoTake.getValue()) {
+                    mPresenter.newPlayerStatus(PlayerStatus.NoTake, new ArrayList<Integer>());
+                } else if (mPlayerStatus == PlayerStatus.NoShare.getValue()) {
+                    mPresenter.newPlayerStatus(PlayerStatus.NoShare, new ArrayList<>());
+                } else if (mPlayerStatus == PlayerStatus.Handout.getValue()) {
+                    mPresenter.newPlayerStatus(PlayerStatus.Handout, new ArrayList<Integer>());
+                } else {
+                    VLog.warning("We click the Negative Button in wrong status " + mPlayerStatus);
+                }
+
+                break;
+
         }
     }
 
