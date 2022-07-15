@@ -63,7 +63,6 @@ public class ClientGame implements IClientGamePresenter {
                             if (playerStatus == PlayerStatus.Logined.getValue() && playerName.equals(mPlayerName)) {
                                 mUIView.OnLoginResult(true, "We seat pos " + seatPos);
                                 mWeSeatPos = seatPos;
-                                return;
                             }
 
                             if (playerName.equals(mPlayerName)) {
@@ -83,7 +82,7 @@ public class ClientGame implements IClientGamePresenter {
                             centerDispatchPokers.add((Integer) centerJsonArray.get(j));
                         }
 
-                        //mUIView.getUIPanelList().get(4).showPokers(centerDispatchPokers);
+                        mUIView.getUIPanelList().get(4).showPokers(centerDispatchPokers);
 
                         for (int i = 0; i < list.length(); i++) {
                             JSONObject singleUser = list.getJSONObject(i);
