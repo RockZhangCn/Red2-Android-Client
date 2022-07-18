@@ -1,0 +1,2 @@
+alias Red2
+Passwd Red2Red2
