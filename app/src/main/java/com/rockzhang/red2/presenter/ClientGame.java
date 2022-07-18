@@ -64,7 +64,7 @@ public class ClientGame implements IClientGamePresenter {
 
                             if (playerName.equals(mPlayerName)) {
                                 if (playerStatus == PlayerStatus.Logined.getValue()) {
-                                    mUIView.OnLoginResult(true, "Seat pos " + seatPos);
+                                    mUIView.OnLoginResult(true, "");
                                     mWeSeatPos = seatPos;
                                 }
 
@@ -151,6 +151,13 @@ public class ClientGame implements IClientGamePresenter {
     private void errorHandler(String message, boolean shouldDialog) {
         VLog.error("ClientGame errorHandler message " + message);
         currentUser().showMessage(message, shouldDialog);
+    }
+
+    @Override
+    public void logout(String loginName) {
+        if (mNetworkHandler != null) {
+            mNetworkHandler.logout();
+        }
     }
 
     @Override

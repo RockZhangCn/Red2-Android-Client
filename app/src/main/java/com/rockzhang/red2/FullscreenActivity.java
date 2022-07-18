@@ -407,6 +407,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
     @Override
     protected void onDestroy() {
         VLog.info("FullscreenActivity onDestroy run in");
+        mPresenter.logout(mPlayerName);
         super.onDestroy();
     }
 

@@ -53,6 +53,18 @@ public class NetworkHandler extends Handler {
         startWebSocket();
     }
 
+    public void logout() {
+        mMessageCallback = null;
+        post(new Runnable() {
+            @Override
+            public void run() {
+                mClientWS.close(-1, "User logout");
+                mClientWS = null;
+            }
+        });
+
+    }
+
     private void errorHandler(String errorStr) {
         JSONObject obj = new JSONObject();
         try {
@@ -66,7 +78,9 @@ public class NetworkHandler extends Handler {
         }
 
         VLog.info("WS received reason " + errorStr);
-        mMessageCallback.OnReceivedMessage(obj);
+        if (mMessageCallback != null) {
+            mMessageCallback.OnReceivedMessage(obj);
+        }
     }
 
     public void startWebSocket() {
