@@ -374,20 +374,21 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                 } else if (playStatus == PlayerStatus.Started.getValue()) {
                     mStartGameButton.setEnabled(false);
                 } else if (playStatus == PlayerStatus.SingleOne.getValue()) {
+                    mStartGameButton.setEnabled(false);
                     mDoActionButton.setEnabled(isActive);
                     mDoNegativeButton.setEnabled(isActive);
                 } else if (playStatus == PlayerStatus.NoTake.getValue()) {
                     VLog.warning("FullscreenActivity received NoTake State");
                 } else if (playStatus == PlayerStatus.Share2.getValue()) {
                     mDoActionButton.setEnabled(true);
-                    mDoNegativeButton.setText("分2");
+                    mDoActionButton.setText("分2");
                     mDoNegativeButton.setEnabled(true);
                     mDoNegativeButton.setText("偷鸡");
                 } else if (playStatus == PlayerStatus.NoShare.getValue()) {
                     VLog.warning("FullscreenActivity received NoShare State");
                 } else if (playStatus == PlayerStatus.Handout.getValue()) {
                     mDoActionButton.setEnabled(isActive);
-                    mDoNegativeButton.setText("出牌");
+                    mDoActionButton.setText("出牌");
                     mDoNegativeButton.setEnabled(isActive);
                     mDoNegativeButton.setText("过牌");
 
@@ -456,6 +457,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                finish();
             }
         });
 

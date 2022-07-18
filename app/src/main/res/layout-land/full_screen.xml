@@ -27,6 +27,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
+                android:textSize="@dimen/full_activity_common_font_size"
                 android:text="left_name"></TextView>
 
             <TextView
@@ -35,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
+                android:textSize="@dimen/full_activity_common_font_size"
                 android:text="left_message"></TextView>
 
             <ImageView
@@ -92,9 +94,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:textSize="@dimen/full_activity_common_font_size"
                     android:layout_marginLeft="80dp"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="right"
                     android:text="top_user"></TextView>
 
                 <ImageView
@@ -137,10 +140,11 @@
                     android:id="@+id/top_user_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/full_activity_common_font_size"
                     android:layout_gravity="center"
                     android:layout_marginRight="80dp"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:text="top_message"></TextView>
             </LinearLayout>
             <!--Center panel -->
@@ -178,6 +182,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
+                android:textSize="@dimen/full_activity_common_font_size"
                 android:text="right_name"></TextView>
 
             <TextView
@@ -185,6 +190,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/full_activity_common_font_size"
                 android:gravity="center_horizontal"
                 android:text="right_message"></TextView>
 
