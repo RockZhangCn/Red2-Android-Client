@@ -54,15 +54,12 @@ public class PokerView extends View {
             R.drawable.poker_44, R.drawable.poker_45, R.drawable.poker_46, R.drawable.poker_47,
             R.drawable.poker_48, R.drawable.poker_49, R.drawable.poker_50, R.drawable.poker_51
     };
+    private static Object sInitializeLock = new Object();
     private final List<Integer> mWeSelectedPokerList = new ArrayList<>(24);
     private int mDrawCenterStartPos = 0;
     private int POKER_DRAW_WIDTH = 0;
-
     private int mBitmapWidth = 0;
     private int mBitmapHeight = 0;
-
-    private static Object sInitializeLock = new Object();
-
     private Paint mBitmapPaint;
     private Rect mPicRect;
     private List<Integer> mDrawingPokers = new ArrayList<>(32);
@@ -100,6 +97,20 @@ public class PokerView extends View {
     private static int sp2px(Context context, float sp) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (sp * fontScale + 0.5f);
+    }
+
+    public static void LoadPokerBitmap(Context context) {
+        if (sPokerBitmapInitialized)
+            return;
+
+        for (int i = 0; i < PokerBitmapIndex.length; i++)
+            PokerBitmap[i] = BitmapFactory.decodeResource(context.getResources(), PokerBitmapIndex[i]);
+
+        sPokerBitmapInitialized = true;
+
+        synchronized (sInitializeLock) {
+            sInitializeLock.notifyAll();
+        }
     }
 
     private void init() {
@@ -153,20 +164,6 @@ public class PokerView extends View {
             result = dp2px(Red2App.getInstance(), 60);
         }
         return result;
-    }
-
-    public static void LoadPokerBitmap(Context context) {
-        if (sPokerBitmapInitialized)
-            return;
-
-        for (int i = 0; i < PokerBitmapIndex.length; i++)
-            PokerBitmap[i] = BitmapFactory.decodeResource(context.getResources(), PokerBitmapIndex[i]);
-
-        sPokerBitmapInitialized = true;
-
-        synchronized (sInitializeLock) {
-            sInitializeLock.notifyAll();
-        }
     }
 
     @Override

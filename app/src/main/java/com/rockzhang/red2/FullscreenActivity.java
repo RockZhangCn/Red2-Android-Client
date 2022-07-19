@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
@@ -280,7 +281,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                     public void run() {
                         mBottomMessage.setText(message);
                         if (shouldDialog) {
-                            showNotifyDialog("Info", message);
+                            showNotifyDialog("Info", message, false);
                         }
                     }
                 });
@@ -361,6 +362,31 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         mDoActionButton.setEnabled(false);
         mDoNegativeButton.setEnabled(false);
         VLog.info("PlayerName is " + mPlayerName + " Server address is " + mServerAddress);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {//如果点击了返回键
+            //声明并初始化弹出对象
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("提示");
+            builder.setMessage("是否退出游戏？");
+            builder.setIcon(R.drawable.icon);
+            //点击对话框以外的区域是否让对话框消失
+            builder.setCancelable(true);
+            //设置确认按钮
+            builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();//退出程序
+                }
+            });
+            //设置取消按钮
+            builder.setPositiveButton("取消", null);
+            //显示弹框
+            builder.show();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -446,7 +472,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         }
     }
 
-    public void showNotifyDialog(String title, String message) {
+    public void showNotifyDialog(String title, String message, boolean finishActivity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
         builder.setTitle(title);
         builder.setMessage(message);
@@ -458,7 +484,9 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                finish();
+                if (finishActivity) {
+                    finish();
+                }
             }
         });
 
@@ -474,10 +502,11 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
             @Override
             public void run() {
                 if (!success) {
-                    showNotifyDialog("Error", message);
+                    showNotifyDialog("Error", message, true);
                 } else {
                     mBottomMessage.setText(message);
                     mBottomName.setText(mPlayerName);
+                    showNotifyDialog("Info", String.format("登陆成功，座位号" + message), false);
                 }
             }
         });

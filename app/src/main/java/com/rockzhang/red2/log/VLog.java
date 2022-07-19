@@ -37,7 +37,7 @@ public class VLog {
             e.printStackTrace();
         }
 
-        String finalMsg = stringBuffer.toString()+": "+ message;
+        String finalMsg = stringBuffer.toString() + ": " + message;
         return finalMsg;
     }
 }

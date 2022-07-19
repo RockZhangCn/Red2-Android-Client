@@ -64,7 +64,7 @@ public class ClientGame implements IClientGamePresenter {
 
                             if (playerName.equals(mPlayerName)) {
                                 if (playerStatus == PlayerStatus.Logined.getValue()) {
-                                    mUIView.OnLoginResult(true, "");
+                                    mUIView.OnLoginResult(true, String.valueOf(seatPos));
                                     mWeSeatPos = seatPos;
                                 }
 
@@ -184,7 +184,7 @@ public class ClientGame implements IClientGamePresenter {
 
     @Override
     public void newPlayerStatus(PlayerStatus status, List<Integer> cards) {
-        boolean handoutPokers = (cards!=null) && !cards.isEmpty();
+        boolean handoutPokers = (cards != null) && !cards.isEmpty();
         if (handoutPokers && (getOwnedPokers().size() == cards.size())) {
             status = PlayerStatus.RunOut;
         }

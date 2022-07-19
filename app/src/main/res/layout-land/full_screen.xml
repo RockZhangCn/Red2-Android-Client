@@ -27,8 +27,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
-                android:textSize="@dimen/full_activity_common_font_size"
-                android:text="left_name"></TextView>
+                android:text="left_name"
+                android:textSize="@dimen/full_activity_common_font_size"></TextView>
 
             <TextView
                 android:id="@+id/left_user_message"
@@ -36,8 +36,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:textSize="@dimen/full_activity_common_font_size"
-                android:text="left_message"></TextView>
+                android:text="left_message"
+                android:textSize="@dimen/full_activity_common_font_size"></TextView>
 
             <ImageView
                 android:id="@+id/left_user_timer_img"
@@ -94,11 +94,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textSize="@dimen/full_activity_common_font_size"
                     android:layout_marginLeft="80dp"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="top_user"></TextView>
+                    android:text="top_user"
+                    android:textSize="@dimen/full_activity_common_font_size"></TextView>
 
                 <ImageView
                     android:id="@+id/top_user_timer_img"
@@ -140,12 +140,12 @@
                     android:id="@+id/top_user_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/full_activity_common_font_size"
                     android:layout_gravity="center"
                     android:layout_marginRight="80dp"
                     android:layout_weight="1"
                     android:gravity="left"
-                    android:text="top_message"></TextView>
+                    android:text="top_message"
+                    android:textSize="@dimen/full_activity_common_font_size"></TextView>
             </LinearLayout>
             <!--Center panel -->
             <LinearLayout
@@ -182,17 +182,17 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
-                android:textSize="@dimen/full_activity_common_font_size"
-                android:text="right_name"></TextView>
+                android:text="right_name"
+                android:textSize="@dimen/full_activity_common_font_size"></TextView>
 
             <TextView
                 android:id="@+id/right_user_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textSize="@dimen/full_activity_common_font_size"
                 android:gravity="center_horizontal"
-                android:text="right_message"></TextView>
+                android:text="right_message"
+                android:textSize="@dimen/full_activity_common_font_size"></TextView>
 
             <ImageView
                 android:id="@+id/right_user_timer_img"
