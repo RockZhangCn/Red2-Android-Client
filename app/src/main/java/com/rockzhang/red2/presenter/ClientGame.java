@@ -62,7 +62,7 @@ public class ClientGame implements IClientGamePresenter {
                             int seatPos = singleUser.getInt("position");
                             int playerStatus = singleUser.getInt("status");
 
-                            if (playerName.equals(mPlayerName)) {
+                            if (playerName.equals(mPlayerName) && (seatPos == obj.getInt("notify_pos"))) {
                                 if (playerStatus == PlayerStatus.Logined.getValue()) {
                                     mUIView.OnLoginResult(true, String.valueOf(seatPos));
                                     mWeSeatPos = seatPos;
