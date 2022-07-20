@@ -8,6 +8,7 @@ public interface IGameView {
     List<UIPanel> getUIPanelList();
 
     void OnLoginResult(boolean success, String message);
+    void showNotifyDialog(String title, String message, boolean finishActivity);
 
     void OnPlayerStatusChanged(int playsStatus, boolean isActive);
 }

@@ -472,6 +472,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         }
     }
 
+    @Override
     public void showNotifyDialog(String title, String message, boolean finishActivity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
         builder.setTitle(title);

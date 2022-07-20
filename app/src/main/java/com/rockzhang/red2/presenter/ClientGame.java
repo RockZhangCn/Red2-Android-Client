@@ -8,6 +8,8 @@ import com.rockzhang.red2.network.NetworkHandler;
 import com.rockzhang.red2.network.NetworkThread;
 import com.rockzhang.red2.role.CardMode;
 import com.rockzhang.red2.role.PlayerStatus;
+import com.rockzhang.red2.utils.GameSound;
+import com.rockzhang.red2.utils.SoundType;
 import com.rockzhang.red2.view.IGameView;
 
 import org.json.JSONArray;
@@ -16,6 +18,7 @@ import org.json.JSONObject;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ClientGame implements IClientGamePresenter {
 
@@ -26,7 +29,9 @@ public class ClientGame implements IClientGamePresenter {
     private int mPlayerStatus;
     private int mActivePos;
     private List<Integer> mCenterDispatchPokers = new ArrayList<>(16);
+    private List<Integer> mOwnedPokers = new ArrayList<>(32);
     private int mCenterPokerIssuer = -1;
+
     NetworkHandler.MessageCallback messageCallback = new NetworkHandler.MessageCallback() {
         @Override
         public void OnReceivedMessage(JSONObject obj) {
@@ -73,7 +78,7 @@ public class ClientGame implements IClientGamePresenter {
                                     mWeSeatPos = seatPos;
                                 }
 
-                                mPlayerStatus = playerStatus;
+                                setPlayerStatus(playerStatus);
                                 mUIView.OnPlayerStatusChanged(mPlayerStatus, mWeSeatPos == mActivePos);
                             }
                         }
@@ -98,6 +103,7 @@ public class ClientGame implements IClientGamePresenter {
                             // SetTimer Icon.
                             if (mActivePos != -1) {
                                 mUIView.getUIPanelList().get(layoutIndex).showTimer(seatPos == mActivePos);
+                                GameSound.getInstance().playSound(SoundType.SOUND_GAME_CLOCK, 1);
                             }
 
                             if (playerStatus == PlayerStatus.Logined.getValue() || playerStatus == PlayerStatus.Started.getValue()) {
@@ -134,12 +140,18 @@ public class ClientGame implements IClientGamePresenter {
             }
         }
     };
-    private List<Integer> mOwnedPokers = new ArrayList<>(32);
+
+    public void setPlayerStatus(int status) {
+        mPlayerStatus = status;
+        if (mPlayerStatus == PlayerStatus.SingleOne.getValue()) {
+            GameSound.getInstance().playSound(SoundType.SOUND_GAME_START);
+        }
+    }
 
     public ClientGame(IGameView view) {
         mUIView = view;
         mWeSeatPos = -1;
-        mPlayerStatus = PlayerStatus.Offline.getValue();
+        setPlayerStatus(PlayerStatus.Offline.getValue());
     }
 
     public List<Integer> getOwnedPokers() {
@@ -199,14 +211,16 @@ public class ClientGame implements IClientGamePresenter {
             } else {
                 CardMode centerCM = CardMode.getCardMode(mCenterDispatchPokers);
                 if (cm == centerCM || cm == CardMode.MODE_BOMB || cm == CardMode.MODE_TWO_RED2 || mCenterPokerIssuer == mWeSeatPos) {
-                    VLog.info(String.format("We pos [%d] issue poker, center poker was issued by [%d]", mWeSeatPos, mCenterPokerIssuer));
+                    VLog.info(String.format(Locale.getDefault(),
+                            "We pos [%d] issue poker, center poker was issued by [%d]", mWeSeatPos, mCenterPokerIssuer));
                 } else {
-                    mUIView.OnLoginResult(false, "出牌不符合规则");
+                    mUIView.showNotifyDialog("Warning", "出牌不符合规则", false);
                     return;
                 }
             }
 
         }
+
         boolean handoutPokers = (cards != null) && !cards.isEmpty();
         if (handoutPokers && (getOwnedPokers().size() == cards.size())) {
             status = PlayerStatus.RunOut;

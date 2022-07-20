@@ -10,6 +10,7 @@ public class GameSound {
 
     private Handler soundHandler;
     private MediaPlayer mMediaPlayer = null;
+    private int mPlayerCount = 1;
 
     private GameSound() {
         mMediaPlayer = new MediaPlayer();
@@ -29,21 +30,31 @@ public class GameSound {
     }
 
     public void playSound(SoundType sound) {
-        playSound(sound, 3);
+        playSound(sound, 1);
     }
 
 
     public void playSound(final SoundType sound, final int count) {
-
+        mPlayerCount = count;
         soundHandler.post(new Runnable() {
             @Override
             public void run() {
-                int run_count = count;
-                while (run_count-- > 0) {
+                while (mPlayerCount-- > 0) {
                     mMediaPlayer.release();
                     mMediaPlayer = MediaPlayer.create(Red2App.getInstance(), sound.getResID());
                     mMediaPlayer.start();
                 }
+            }
+        });
+    }
+
+    public void stopSound() {
+        mPlayerCount = 0;
+        soundHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mMediaPlayer.stop();
+                mMediaPlayer.release();
             }
         });
     }
