@@ -1,9 +1,12 @@
 package com.rockzhang.red2.presenter;
 
+import android.text.TextUtils;
+
 import com.rockzhang.red2.log.VLog;
 import com.rockzhang.red2.model.UIPanel;
 import com.rockzhang.red2.network.NetworkHandler;
 import com.rockzhang.red2.network.NetworkThread;
+import com.rockzhang.red2.role.CardMode;
 import com.rockzhang.red2.role.PlayerStatus;
 import com.rockzhang.red2.view.IGameView;
 
@@ -22,6 +25,8 @@ public class ClientGame implements IClientGamePresenter {
     private int mWeSeatPos;
     private int mPlayerStatus;
     private int mActivePos;
+    private List<Integer> mCenterDispatchPokers = new ArrayList<>(16);
+    private int mCenterPokerIssuer = -1;
     NetworkHandler.MessageCallback messageCallback = new NetworkHandler.MessageCallback() {
         @Override
         public void OnReceivedMessage(JSONObject obj) {
@@ -33,7 +38,7 @@ public class ClientGame implements IClientGamePresenter {
                 }
 
                 String action = (String) obj.get("action");
-                if (action == null) {
+                if (TextUtils.isEmpty(action)) {
                     errorHandler("Message format error", false);
                     return;
                 }
@@ -74,12 +79,13 @@ public class ClientGame implements IClientGamePresenter {
                         }
 
                         JSONArray centerJsonArray = obj.getJSONArray("center_pokers");
-                        List<Integer> centerDispatchPokers = new ArrayList<>(centerJsonArray.length());
+                        mCenterDispatchPokers.clear();
+                        mCenterPokerIssuer = obj.getInt("center_poker_issuer");
                         for (int j = 0; j < centerJsonArray.length(); j++) {
-                            centerDispatchPokers.add((Integer) centerJsonArray.get(j));
+                            mCenterDispatchPokers.add((Integer) centerJsonArray.get(j));
                         }
 
-                        mUIView.getUIPanelList().get(4).showPokers(centerDispatchPokers);
+                        mUIView.getUIPanelList().get(4).showPokers(mCenterDispatchPokers);
 
                         for (int i = 0; i < list.length(); i++) {
                             JSONObject singleUser = list.getJSONObject(i);
@@ -184,6 +190,23 @@ public class ClientGame implements IClientGamePresenter {
 
     @Override
     public void newPlayerStatus(PlayerStatus status, List<Integer> cards) {
+
+        if (status == PlayerStatus.Handout) {
+            CardMode cm = CardMode.getCardMode(cards);
+            if (cm == CardMode.MODE_INVALID) {
+                mUIView.OnLoginResult(false, "出牌不符合规则");
+                return;
+            } else {
+                CardMode centerCM = CardMode.getCardMode(mCenterDispatchPokers);
+                if (cm == centerCM || cm == CardMode.MODE_BOMB || cm == CardMode.MODE_TWO_RED2 || mCenterPokerIssuer == mWeSeatPos) {
+                    VLog.info(String.format("We pos [%d] issue poker, center poker was issued by [%d]", mWeSeatPos, mCenterPokerIssuer));
+                } else {
+                    mUIView.OnLoginResult(false, "出牌不符合规则");
+                    return;
+                }
+            }
+
+        }
         boolean handoutPokers = (cards != null) && !cards.isEmpty();
         if (handoutPokers && (getOwnedPokers().size() == cards.size())) {
             status = PlayerStatus.RunOut;

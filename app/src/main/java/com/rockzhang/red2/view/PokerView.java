@@ -140,6 +140,7 @@ public class PokerView extends View {
         VLog.info("We selected pokers " + Arrays.toString(selectedList.toArray()));
         // Clear the selection.
         mWeSelectedPokerList.clear();
+        invalidate();
         return selectedList;
     }
 

@@ -23,6 +23,7 @@ import com.rockzhang.red2.log.VLog;
 import com.rockzhang.red2.model.UIPanel;
 import com.rockzhang.red2.presenter.ClientGame;
 import com.rockzhang.red2.presenter.IClientGamePresenter;
+import com.rockzhang.red2.role.CardMode;
 import com.rockzhang.red2.role.PlayerStatus;
 import com.rockzhang.red2.view.IGameView;
 import com.rockzhang.red2.view.PokerView;
@@ -448,7 +449,6 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                     mPresenter.newPlayerStatus(PlayerStatus.SingleOne, new ArrayList<Integer>());
                 } else if (mPlayerStatus == PlayerStatus.Share2.getValue()) {
                     mPresenter.newPlayerStatus(PlayerStatus.Share2, new ArrayList<Integer>());
-
                 } else if (mPlayerStatus == PlayerStatus.Handout.getValue()) {
                     mPresenter.newPlayerStatus(PlayerStatus.Handout, mBottomPokerView.getSelectedCards());
                 } else {
