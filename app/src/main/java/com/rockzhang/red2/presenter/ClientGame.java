@@ -32,6 +32,15 @@ public class ClientGame implements IClientGamePresenter {
     private List<Integer> mOwnedPokers = new ArrayList<>(32);
     private int mCenterPokerIssuer = -1;
 
+    private void clearAllInfo() {
+        for (int layoutIndex = 0; layoutIndex < 4; layoutIndex++) {
+            mUIView.getUIPanelList().get(layoutIndex).showName("");
+            mUIView.getUIPanelList().get(layoutIndex).showMessage("", false);
+            mUIView.getUIPanelList().get(layoutIndex).showTimer(false);
+            mUIView.getUIPanelList().get(layoutIndex).showPokers(new ArrayList<Integer>());
+        }
+
+    }
     NetworkHandler.MessageCallback messageCallback = new NetworkHandler.MessageCallback() {
         @Override
         public void OnReceivedMessage(JSONObject obj) {
@@ -64,6 +73,8 @@ public class ClientGame implements IClientGamePresenter {
                         if (mWeSeatPos == -1) {
                             mWeSeatPos = obj.getInt("recover_pos");
                         }
+
+                        clearAllInfo();
 
                         // login handler
                         for (int i = 0; i < list.length(); i++) {
