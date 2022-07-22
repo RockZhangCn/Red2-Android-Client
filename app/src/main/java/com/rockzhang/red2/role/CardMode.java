@@ -30,10 +30,6 @@ public class CardMode {
         return new CardMode(value);
     }
 
-    public int getValue() {
-        return mInternalValue;
-    }
-
     public static CardMode getCardMode(List<Integer> cards) {
         Collections.sort(cards, Collections.reverseOrder());
 
@@ -49,7 +45,7 @@ public class CardMode {
             return MODE_INVALID;
         } else if (cnt == 1) {
             return MODE_SINGLE;
-        }  else if (cnt == 2) {
+        } else if (cnt == 2) {
             if (valueCount == 1) {
                 if ((cards.get(0) == 48) && (cards.get(1) == 48)) {
                     return MODE_TWO_RED2;
@@ -98,8 +94,8 @@ public class CardMode {
                 return MODE_BOMB;
             } else if ((valueCount == cnt)
                     && (
-                            (Math.abs(cards.get(0) / 4 - cards.get(cnt -1)/4)) == (cnt -1)
-                        )
+                    (Math.abs(cards.get(0) / 4 - cards.get(cnt - 1) / 4)) == (cnt - 1)
+            )
             ) {
                 return MODE_SINGLE_LONG;
             } else if ((valueCount == cnt / 2) && (cnt % 2 == 0)) {
@@ -115,6 +111,10 @@ public class CardMode {
             }
         }
 
+    }
+
+    public int getValue() {
+        return mInternalValue;
     }
 
 }

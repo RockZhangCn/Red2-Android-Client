@@ -24,7 +24,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginBottom="36dp"
         android:hint="The any name you like."
-        android:maxLength="12"
+        android:maxLength="8"
         android:padding="4dp"
         android:textSize="@dimen/main_activity_font" />
 
