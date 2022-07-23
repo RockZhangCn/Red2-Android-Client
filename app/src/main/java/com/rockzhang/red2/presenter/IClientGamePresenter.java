@@ -10,4 +10,8 @@ public interface IClientGamePresenter {
     void logout(String loginName);
 
     void newPlayerStatus(PlayerStatus status, List<Integer> cards);
+
+    int centerPokerIssuer();
+
+    int getWeSeatPos();
 }

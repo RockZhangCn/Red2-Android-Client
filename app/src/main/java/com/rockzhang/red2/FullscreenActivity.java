@@ -386,6 +386,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
             builder.setPositiveButton("取消", null);
             //显示弹框
             builder.show();
+            return false;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -418,8 +419,15 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                 } else if (playStatus == PlayerStatus.Handout.getValue()) {
                     mDoActionButton.setEnabled(isActive);
                     mDoActionButton.setText("出牌");
-                    mDoNegativeButton.setEnabled(isActive);
+
+
                     mDoNegativeButton.setText("过牌");
+                    if (mPresenter.getWeSeatPos() == mPresenter.centerPokerIssuer()
+                    || mPresenter.centerPokerIssuer() == -1) {
+                        mDoNegativeButton.setEnabled(false);
+                    } else  {
+                        mDoNegativeButton.setEnabled(isActive);
+                    }
 
                 } else if (playStatus == PlayerStatus.RunOut.getValue()) {
                     mDoActionButton.setEnabled(false);
