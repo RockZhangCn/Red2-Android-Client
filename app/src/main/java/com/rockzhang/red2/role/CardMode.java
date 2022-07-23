@@ -7,6 +7,8 @@ import java.util.Set;
 
 public class CardMode {
     public static CardMode MODE_INVALID = new CardMode(-1);
+
+    public static CardMode MODE_SKIP = new CardMode(0);
     public static CardMode MODE_SINGLE = new CardMode(1);
     public static CardMode MODE_PAIR = new CardMode(2);
     public static CardMode MODE_THREE = new CardMode(3);
@@ -35,14 +37,14 @@ public class CardMode {
 
         Set<Integer> valueSet = new HashSet<>(8);
         for (Integer i : cards) {
-            valueSet.add(i);
+            valueSet.add(i/4);
         }
 
         int cnt = cards.size();
         int valueCount = valueSet.size();
 
         if (cnt == 0) {
-            return MODE_INVALID;
+            return MODE_SKIP;
         } else if (cnt == 1) {
             return MODE_SINGLE;
         } else if (cnt == 2) {

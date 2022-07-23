@@ -405,6 +405,8 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                     mDoActionButton.setEnabled(isActive);
                     mDoNegativeButton.setEnabled(isActive);
                 } else if (playStatus == PlayerStatus.NoTake.getValue()) {
+                    mDoActionButton.setEnabled(isActive);
+                    mDoNegativeButton.setEnabled(isActive);
                     VLog.warning("FullscreenActivity received NoTake State");
                 } else if (playStatus == PlayerStatus.Share2.getValue()) {
                     mDoActionButton.setEnabled(true);
@@ -457,9 +459,9 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                 break;
 
             case R.id.do_negative_button:
-                if (mPlayerStatus == PlayerStatus.NoTake.getValue()) {
+                if (mPlayerStatus == PlayerStatus.SingleOne.getValue()) {
                     mPresenter.newPlayerStatus(PlayerStatus.NoTake, new ArrayList<Integer>());
-                } else if (mPlayerStatus == PlayerStatus.NoShare.getValue()) {
+                } else if (mPlayerStatus == PlayerStatus.Share2.getValue()) {
                     mPresenter.newPlayerStatus(PlayerStatus.NoShare, new ArrayList<>());
                 } else if (mPlayerStatus == PlayerStatus.Handout.getValue()) {
                     mPresenter.newPlayerStatus(PlayerStatus.Handout, new ArrayList<Integer>());
