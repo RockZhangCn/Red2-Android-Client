@@ -31,14 +31,7 @@ public class ClientGame implements IClientGamePresenter {
     private List<Integer> mCenterDispatchPokers = new ArrayList<>(16);
     private List<Integer> mOwnedPokers = new ArrayList<>(32);
     private int mCenterPokerIssuer = -1;
-
-    private void clearAllInfo(int layoutIndex) {
-        mUIView.getUIPanelList().get(layoutIndex).showName("");
-        mUIView.getUIPanelList().get(layoutIndex).showMessage("", false);
-        mUIView.getUIPanelList().get(layoutIndex).showTimer(false);
-        mUIView.getUIPanelList().get(layoutIndex).showPokers(new ArrayList<Integer>());
-    }
-
+    private boolean mGameStarted = false;
     NetworkHandler.MessageCallback messageCallback = new NetworkHandler.MessageCallback() {
         @Override
         public void OnReceivedMessage(JSONObject obj) {
@@ -81,7 +74,7 @@ public class ClientGame implements IClientGamePresenter {
 
 
                             if (playerName.equals(mPlayerName)) {
-                                if  (seatPos == obj.getInt("notify_pos")) {
+                                if (seatPos == obj.getInt("notify_pos")) {
                                     if (playerStatus == PlayerStatus.Logined.getValue()) {
                                         mUIView.OnLoginResult(true, String.valueOf(seatPos));
                                         mWeSeatPos = seatPos;
@@ -170,7 +163,18 @@ public class ClientGame implements IClientGamePresenter {
         }
     };
 
-    private boolean mGameStarted = false;
+    public ClientGame(IGameView view) {
+        mUIView = view;
+        mWeSeatPos = -1;
+        setPlayerStatus(PlayerStatus.Offline.getValue(), false);
+    }
+
+    private void clearAllInfo(int layoutIndex) {
+        mUIView.getUIPanelList().get(layoutIndex).showName("");
+        mUIView.getUIPanelList().get(layoutIndex).showMessage("", false);
+        mUIView.getUIPanelList().get(layoutIndex).showTimer(false);
+        mUIView.getUIPanelList().get(layoutIndex).showPokers(new ArrayList<Integer>());
+    }
 
     public void setPlayerStatus(int status, boolean isActive) {
         mPlayerStatus = status;
@@ -180,12 +184,6 @@ public class ClientGame implements IClientGamePresenter {
             }
             mGameStarted = true;
         }
-    }
-
-    public ClientGame(IGameView view) {
-        mUIView = view;
-        mWeSeatPos = -1;
-        setPlayerStatus(PlayerStatus.Offline.getValue(), false);
     }
 
     public List<Integer> getOwnedPokers() {

@@ -37,7 +37,7 @@ public class CardMode {
 
         Set<Integer> valueSet = new HashSet<>(8);
         for (Integer i : cards) {
-            valueSet.add(i/4);
+            valueSet.add(i / 4);
         }
 
         int cnt = cards.size();
@@ -67,9 +67,9 @@ public class CardMode {
             if (valueCount == 1) {
                 return MODE_BOMB;
             } else if (valueCount == 2) {
-                if ((cards.get(0)/4 == cards.get(1)/4) && (cards.get(1)/4 == cards.get(2)/4 )) {
+                if ((cards.get(0) / 4 == cards.get(1) / 4) && (cards.get(1) / 4 == cards.get(2) / 4)) {
                     return MODE_THREE_ONE;
-                } else if ((cards.get(1)/4 == cards.get(2)/4) && (cards.get(2)/4 == cards.get(3)/4)) {
+                } else if ((cards.get(1) / 4 == cards.get(2) / 4) && (cards.get(2) / 4 == cards.get(3) / 4)) {
                     return MODE_THREE_ONE;
                 } else {
                     return MODE_INVALID;
@@ -81,9 +81,9 @@ public class CardMode {
             if (valueCount == 1) {
                 return MODE_BOMB;
             } else if (valueCount == 2) {
-                if ((cards.get(0)/4 == cards.get(1)/4) && (cards.get(1)/4 == cards.get(2)/4 )) {
+                if ((cards.get(0) / 4 == cards.get(1) / 4) && (cards.get(1) / 4 == cards.get(2) / 4)) {
                     return MODE_THREE_TWE;
-                } else if ((cards.get(2)/4 == cards.get(3)/4 ) && (cards.get(3)/4 == cards.get(4)/4)) {
+                } else if ((cards.get(2) / 4 == cards.get(3) / 4) && (cards.get(3) / 4 == cards.get(4) / 4)) {
                     return MODE_THREE_TWE;
                 } else {
                     return MODE_INVALID;
