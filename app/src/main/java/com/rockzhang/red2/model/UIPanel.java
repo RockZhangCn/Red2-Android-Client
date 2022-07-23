@@ -11,4 +11,6 @@ public interface UIPanel {
 
     void showTimer(Boolean show);
 
+    void showCenterPokerIssuer(boolean isIssuer);
+
 }

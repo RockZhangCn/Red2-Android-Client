@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -105,6 +107,10 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         ImageView leftPokerImg = (ImageView) findViewById(R.id.left_user_poker_img);
 
         UIPanel leftPanel = new UIPanel() {
+            private Drawable mOriginalBackground = null;
+            public void UIPanel() {
+                mOriginalBackground = leftName.getBackground();
+            }
             @Override
             public void showName(String name) {
                 mUIHandler.post(new Runnable() {
@@ -114,6 +120,20 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                     }
                 });
 
+            }
+
+            @Override
+            public void showCenterPokerIssuer(boolean isIssuer) {
+                mUIHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isIssuer) {
+                            leftName.setTextColor(Color.parseColor("#FF0000"));
+                        } else {
+                            leftName.setTextColor(Color.parseColor("#000000"));
+                        }
+                    }
+                });
             }
 
             @Override
@@ -161,6 +181,10 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         ImageView topPokerImg = (ImageView) findViewById(R.id.top_user_poker_img);
 
         UIPanel topPanel = new UIPanel() {
+            private Drawable mOriginalBackground = null;
+            public void UIPanel() {
+                mOriginalBackground = leftName.getBackground();
+            }
             @Override
             public void showName(String name) {
                 mUIHandler.post(new Runnable() {
@@ -170,6 +194,21 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                     }
                 });
             }
+
+            @Override
+            public void showCenterPokerIssuer(boolean isIssuer) {
+                mUIHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isIssuer) {
+                            topName.setTextColor(Color.parseColor("#FF0000"));
+                        } else {
+                            topName.setTextColor(Color.parseColor("#000000"));
+                        }
+                    }
+                });
+            }
+
 
             @Override
             public void showMessage(String message, boolean shouldDialog) {
@@ -213,12 +252,30 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         TextView rightPokerNum = (TextView) findViewById(R.id.right_user_poker_num);
         ImageView rightPokerImg = (ImageView) findViewById(R.id.right_user_poker_img);
         UIPanel rightPanel = new UIPanel() {
+            private Drawable mOriginalBackground = null;
+            public void UIPanel() {
+                mOriginalBackground = leftName.getBackground();
+            }
             @Override
             public void showName(String name) {
                 mUIHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         rightName.setText(name);
+                    }
+                });
+            }
+
+            @Override
+            public void showCenterPokerIssuer(boolean isIssuer) {
+                mUIHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isIssuer) {
+                            rightName.setTextColor(Color.parseColor("#FF0000"));
+                        } else {
+                            rightName.setTextColor(Color.parseColor("#000000"));
+                        }
                     }
                 });
             }
@@ -275,6 +332,12 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
             }
 
             @Override
+            public void showCenterPokerIssuer(boolean isIssuer) {
+
+            }
+
+
+            @Override
             public void showMessage(String message, boolean shouldDialog) {
                 mUIHandler.post(new Runnable() {
                     @Override
@@ -299,7 +362,8 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
 
             @Override
             public void showTimer(Boolean show) {
-                VLog.info("It's our turn to do action");
+                if (show)
+                    VLog.info("It's our turn to do action");
             }
         };
 
@@ -319,6 +383,11 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
 
             @Override
             public void showMessage(String message, boolean shouldDialog) {
+
+            }
+
+            @Override
+            public void showCenterPokerIssuer(boolean isIssuer) {
 
             }
 
@@ -357,7 +426,6 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
         mDoActionButton.setOnClickListener(this);
         mDoNegativeButton.setOnClickListener(this);
 
-
         mStartGameButton.setEnabled(false);
         mDoActionButton.setEnabled(false);
         mDoNegativeButton.setEnabled(false);
@@ -393,6 +461,7 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
     @Override
     public void OnPlayerStatusChanged(final int playStatus, boolean isActive) {
         mPlayerStatus = playStatus;
+        VLog.info("OnPlayerStatusChanged to modify button status " + playStatus + " isActive " + isActive);
         mUIHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -420,8 +489,6 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                 } else if (playStatus == PlayerStatus.Handout.getValue()) {
                     mDoActionButton.setEnabled(isActive);
                     mDoActionButton.setText("出牌");
-
-
                     mDoNegativeButton.setText("过牌");
                     if (mPresenter.getWeSeatPos() == mPresenter.centerPokerIssuer()
                             || mPresenter.centerPokerIssuer() == -1) {
@@ -429,7 +496,6 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                     } else {
                         mDoNegativeButton.setEnabled(isActive);
                     }
-
                 } else if (playStatus == PlayerStatus.RunOut.getValue()) {
                     mDoActionButton.setEnabled(false);
                     mDoNegativeButton.setEnabled(false);

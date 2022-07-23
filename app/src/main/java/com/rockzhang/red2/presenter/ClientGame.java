@@ -77,8 +77,8 @@ public class ClientGame implements IClientGamePresenter {
                                 if (seatPos == obj.getInt("notify_pos")) {
                                     if (playerStatus == PlayerStatus.Logined.getValue()) {
                                         mUIView.OnLoginResult(true, String.valueOf(seatPos));
-                                        mWeSeatPos = seatPos;
                                     }
+                                    mWeSeatPos = seatPos;
                                 }
 
                                 setPlayerStatus(playerStatus, mWeSeatPos == mActivePos);
@@ -94,6 +94,7 @@ public class ClientGame implements IClientGamePresenter {
                         JSONArray centerJsonArray = obj.getJSONArray("center_pokers");
                         mCenterDispatchPokers.clear();
                         mCenterPokerIssuer = obj.getInt("center_poker_issuer");
+
                         for (int j = 0; j < centerJsonArray.length(); j++) {
                             mCenterDispatchPokers.add((Integer) centerJsonArray.get(j));
                         }
@@ -108,6 +109,8 @@ public class ClientGame implements IClientGamePresenter {
                             String message = singleUser.getString("message");
 
                             int layoutIndex = (seatPos + 4 - mWeSeatPos) % 4;
+
+
                             // SetTimer Icon.
                             if (mActivePos != -1) {
                                 mUIView.getUIPanelList().get(layoutIndex).showTimer(seatPos == mActivePos);
@@ -122,10 +125,8 @@ public class ClientGame implements IClientGamePresenter {
                                 mUIView.getUIPanelList().get(layoutIndex).showMessage(message, false);
                             } else if (playerStatus == PlayerStatus.SingleOne.getValue() ||
                                     playerStatus == PlayerStatus.NoTake.getValue() ||
-
                                     playerStatus == PlayerStatus.Share2.getValue() ||
                                     playerStatus == PlayerStatus.NoShare.getValue() ||
-
                                     playerStatus == PlayerStatus.Handout.getValue() ||
                                     playerStatus == PlayerStatus.RunOut.getValue()
                             ) {
@@ -151,6 +152,15 @@ public class ClientGame implements IClientGamePresenter {
                                 mUIView.getUIPanelList().get(layoutIndex).showMessage(message, false);
                                 mUIView.getUIPanelList().get(layoutIndex).showPokers(new ArrayList<>());
                             }
+
+
+                            if (mCenterPokerIssuer != -1) {
+                                VLog.info("LayoutIndex " + layoutIndex + " is center poker issuer ? " +
+                                        (mCenterPokerIssuer == seatPos));
+                                // center pokers issuer.
+                                mUIView.getUIPanelList().get(layoutIndex).
+                                        showCenterPokerIssuer(mCenterPokerIssuer == seatPos);
+                            }
                         }
                     }
                 }
@@ -173,6 +183,7 @@ public class ClientGame implements IClientGamePresenter {
         mUIView.getUIPanelList().get(layoutIndex).showName("");
         mUIView.getUIPanelList().get(layoutIndex).showMessage("", false);
         mUIView.getUIPanelList().get(layoutIndex).showTimer(false);
+
         mUIView.getUIPanelList().get(layoutIndex).showPokers(new ArrayList<Integer>());
     }
 
@@ -250,7 +261,6 @@ public class ClientGame implements IClientGamePresenter {
                     return;
                 }
             }
-
         }
 
         boolean handoutPokers = (cards != null) && !cards.isEmpty();
@@ -287,7 +297,5 @@ public class ClientGame implements IClientGamePresenter {
     @Override
     public int getWeSeatPos() {
         return mWeSeatPos;
-
     }
-
 }
