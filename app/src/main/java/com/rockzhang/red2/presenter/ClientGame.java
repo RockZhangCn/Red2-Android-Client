@@ -88,7 +88,7 @@ public class ClientGame implements IClientGamePresenter {
                                     }
                                 }
 
-                                setPlayerStatus(playerStatus);
+                                setPlayerStatus(playerStatus, mWeSeatPos == mActivePos);
                                 mUIView.OnPlayerStatusChanged(mPlayerStatus, mWeSeatPos == mActivePos);
                             }
                         }
@@ -118,7 +118,10 @@ public class ClientGame implements IClientGamePresenter {
                             // SetTimer Icon.
                             if (mActivePos != -1) {
                                 mUIView.getUIPanelList().get(layoutIndex).showTimer(seatPos == mActivePos);
-                                GameSound.getInstance().playSound(SoundType.SOUND_GAME_CLOCK, 1);
+
+                                if (mActivePos == mWeSeatPos) {
+                                    GameSound.getInstance().playSound(SoundType.SOUND_GAME_CLOCK, 1);
+                                }
                             }
 
                             if (playerStatus == PlayerStatus.Logined.getValue() || playerStatus == PlayerStatus.Started.getValue()) {
@@ -144,6 +147,11 @@ public class ClientGame implements IClientGamePresenter {
                                     mUIView.getUIPanelList().get(layoutIndex).showMessage(message, false);
                                     mUIView.getUIPanelList().get(layoutIndex).showPokers(dispatchPokers);
                                 }
+
+                                if (seatPos == mWeSeatPos) {
+                                    setOwnedPokers(dispatchPokers);
+                                }
+
                             } else if (playerStatus == PlayerStatus.GameOver.getValue()) {
                                 GameSound.getInstance().playSound(SoundType.SOUND_GAME_LOSE);
                                 mUIView.getUIPanelList().get(layoutIndex).showName(playerName);
@@ -162,17 +170,22 @@ public class ClientGame implements IClientGamePresenter {
         }
     };
 
-    public void setPlayerStatus(int status) {
+    private boolean mGameStarted = false;
+
+    public void setPlayerStatus(int status, boolean isActive) {
         mPlayerStatus = status;
         if (mPlayerStatus == PlayerStatus.SingleOne.getValue()) {
-            GameSound.getInstance().playSound(SoundType.SOUND_GAME_START);
+            if (!mGameStarted) {
+                GameSound.getInstance().playSound(SoundType.SOUND_GAME_START);
+            }
+            mGameStarted = true;
         }
     }
 
     public ClientGame(IGameView view) {
         mUIView = view;
         mWeSeatPos = -1;
-        setPlayerStatus(PlayerStatus.Offline.getValue());
+        setPlayerStatus(PlayerStatus.Offline.getValue(), false);
     }
 
     public List<Integer> getOwnedPokers() {
@@ -244,6 +257,7 @@ public class ClientGame implements IClientGamePresenter {
 
         boolean handoutPokers = (cards != null) && !cards.isEmpty();
         if (handoutPokers && (getOwnedPokers().size() == cards.size())) {
+            VLog.info("We come to RunOut state");
             status = PlayerStatus.RunOut;
         }
 
@@ -265,6 +279,17 @@ public class ClientGame implements IClientGamePresenter {
         }
 
         mNetworkHandler.sendWebSocketMessage(sendJsonObject.toString());
+    }
+
+    @Override
+    public int centerPokerIssuer() {
+        return mCenterPokerIssuer;
+    }
+
+    @Override
+    public int getWeSeatPos() {
+        return mWeSeatPos;
+
     }
 
 }
