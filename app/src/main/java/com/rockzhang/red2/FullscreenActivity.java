@@ -23,7 +23,6 @@ import com.rockzhang.red2.log.VLog;
 import com.rockzhang.red2.model.UIPanel;
 import com.rockzhang.red2.presenter.ClientGame;
 import com.rockzhang.red2.presenter.IClientGamePresenter;
-import com.rockzhang.red2.role.CardMode;
 import com.rockzhang.red2.role.PlayerStatus;
 import com.rockzhang.red2.view.IGameView;
 import com.rockzhang.red2.view.PokerView;
@@ -425,9 +424,9 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
 
                     mDoNegativeButton.setText("过牌");
                     if (mPresenter.getWeSeatPos() == mPresenter.centerPokerIssuer()
-                    || mPresenter.centerPokerIssuer() == -1) {
+                            || mPresenter.centerPokerIssuer() == -1) {
                         mDoNegativeButton.setEnabled(false);
-                    } else  {
+                    } else {
                         mDoNegativeButton.setEnabled(isActive);
                     }
 
