@@ -79,10 +79,13 @@ public class ClientGame implements IClientGamePresenter {
                             int seatPos = singleUser.getInt("position");
                             int playerStatus = singleUser.getInt("status");
 
-                            if (playerName.equals(mPlayerName) && (seatPos == obj.getInt("notify_pos"))) {
-                                if (playerStatus == PlayerStatus.Logined.getValue()) {
-                                    mUIView.OnLoginResult(true, String.valueOf(seatPos));
-                                    mWeSeatPos = seatPos;
+
+                            if (playerName.equals(mPlayerName)) {
+                                if  (seatPos == obj.getInt("notify_pos")) {
+                                    if (playerStatus == PlayerStatus.Logined.getValue()) {
+                                        mUIView.OnLoginResult(true, String.valueOf(seatPos));
+                                        mWeSeatPos = seatPos;
+                                    }
                                 }
 
                                 setPlayerStatus(playerStatus);
@@ -153,6 +156,7 @@ public class ClientGame implements IClientGamePresenter {
 
             } catch (Exception e) {
                 VLog.error("ClientGame meet exception " + e.toString());
+                e.printStackTrace();
                 mUIView.OnLoginResult(false, e.toString());
             }
         }
@@ -226,7 +230,8 @@ public class ClientGame implements IClientGamePresenter {
                 return;
             } else {
                 CardMode centerCM = CardMode.getCardMode(mCenterDispatchPokers);
-                if (cm == centerCM || cm == CardMode.MODE_BOMB || cm == CardMode.MODE_TWO_RED2 || mCenterPokerIssuer == mWeSeatPos) {
+                if (cm == centerCM || cm == CardMode.MODE_BOMB || cm == CardMode.MODE_TWO_RED2 ||
+                        mCenterPokerIssuer == mWeSeatPos || centerCM == CardMode.MODE_SKIP || cm == CardMode.MODE_SKIP) {
                     VLog.info(String.format(Locale.getDefault(),
                             "We pos [%d] issue poker, center poker was issued by [%d]", mWeSeatPos, mCenterPokerIssuer));
                 } else {
