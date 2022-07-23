@@ -403,8 +403,10 @@ public class FullscreenActivity extends AppCompatActivity implements IGameView, 
                     mStartGameButton.setEnabled(false);
                 } else if (playStatus == PlayerStatus.SingleOne.getValue()) {
                     mStartGameButton.setEnabled(false);
+                    mDoActionButton.setText("抢2");
                     mDoActionButton.setEnabled(isActive);
                     mDoNegativeButton.setEnabled(isActive);
+                    mDoNegativeButton.setText("不抢");
                 } else if (playStatus == PlayerStatus.NoTake.getValue()) {
                     mDoActionButton.setEnabled(isActive);
                     mDoNegativeButton.setEnabled(isActive);
