@@ -4,4 +4,5 @@
 ## Android客户端运行截图
 ![avatar](screenshots/6.jpg)
 ![avatar](screenshots/5.jpg)
+#红色用户名代表是中间牌的出牌人。
 
