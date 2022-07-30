@@ -1,6 +1,22 @@
 plugins {
     id 'com.android.application'
+    id "com.diffplug.gradle.spotless" version "3.16.0"
 }
+
+spotless {
+    java {
+        googleJavaFormat()
+        indentWithTabs(2)
+        indentWithSpaces(4)
+    }
+}
+
+//def hook = new File("$rootProject.projectDir/.git/hooks/pre-commit")
+//hook.text = """#!/bin/bash
+//echo "will run nova code format"
+//./gradlew spotlessApply
+//"""
+
 
 android {
     signingConfigs {
@@ -17,8 +33,8 @@ android {
         applicationId "com.rockzhang.red2"
         minSdk 24
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        versionCode getSelfDefinedVersion("code")
+        versionName getSelfDefinedVersion("name")
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -46,4 +62,21 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+def getSelfDefinedVersion(type) {
+    int aa = 1
+    Process process = "git rev-list --count HEAD".execute()
+    process.waitFor()
+    int cccc = process.getText().toInteger()
+
+    if ("code".equals(type)) {
+        aa * 1000  + cccc
+    } else if ("name".equals(type)) {
+        String today = new Date().format("yyMMdd")
+        process = "git describe --always".execute()
+        process.waitFor()
+        String sha1 = process.getText().trim()
+        "$aa.$cccc.$today.$sha1"
+    }
 }
