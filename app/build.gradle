@@ -19,6 +19,15 @@ spotless {
 
 
 android {
+//    Cause a lint error.
+//    applicationVariants.all {
+//        def buildType = it.buildType.name
+//        if (buildType == "release") {
+//            it.getPackageApplicationProvider().get().outputDirectory =
+//                    new File(project.rootDir.absolutePath + "/release_apk")
+//        }
+//    }
+
     signingConfigs {
         release {
             storeFile file('signature/red2_signature.jks')
@@ -35,7 +44,7 @@ android {
         targetSdk 32
         versionCode getSelfDefinedVersion("code")
         versionName getSelfDefinedVersion("name")
-
+        archivesBaseName = "Red2-Android"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -46,6 +55,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

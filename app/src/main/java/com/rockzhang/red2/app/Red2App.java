@@ -8,10 +8,6 @@ import android.view.WindowManager;
 import com.rockzhang.red2.log.VLog;
 import com.rockzhang.red2.view.PokerView;
 
-//import okhttp3.OkHttpClient;
-//import retrofit2.Retrofit;
-//import retrofit2.converter.gson.GsonConverterFactory;
-
 public class Red2App extends Application {
 
     private static Context mAppContext;
