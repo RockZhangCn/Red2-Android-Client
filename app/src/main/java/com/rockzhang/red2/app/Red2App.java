@@ -13,6 +13,7 @@ public class Red2App extends Application {
     private static Context mAppContext;
     private static Red2App m_singleInstance;
 
+
     public static Red2App getInstance() {
         return m_singleInstance;
     }
@@ -22,6 +23,7 @@ public class Red2App extends Application {
         super.onCreate();
         m_singleInstance = this;
         mAppContext = m_singleInstance;
+
         getScreenInfo();
         new Thread(new Runnable() {
             @Override

@@ -59,5 +59,15 @@
         android:textAlignment="center"
         android:textSize="@dimen/main_activity_font" />
 
+    <Button
+        android:id="@+id/update_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/main_activity_margin"
+        android:padding="@dimen/main_activity_padding"
+        android:text="检查升级"
+        android:textAlignment="center"
+        android:textSize="@dimen/main_activity_font" />
+
 
 </LinearLayout>

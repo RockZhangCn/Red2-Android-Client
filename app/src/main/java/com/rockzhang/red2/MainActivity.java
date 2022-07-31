@@ -7,7 +7,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.rockzhang.red2.app.UpdateManager;
 import com.rockzhang.red2.utils.SPUtils;
 
 
@@ -18,8 +20,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText mServerAddressWidget;
     private EditText mPlayerNameWidget;
 
-
+    private UpdateManager mUpdateManager;
     private Button mStartGame;
+    private Button mUpdateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.main_activity);
 
         mStartGame = findViewById(R.id.login_game_item);
+        mUpdateButton = findViewById(R.id.update_button);
+        mUpdateButton.setOnClickListener(this);
+
         mServerAddressWidget = findViewById(R.id.server_address);
         mPlayerNameWidget = findViewById(R.id.player_name);
         mStartGame.setOnClickListener(this);
@@ -41,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!TextUtils.isEmpty(mPlayerName)) {
             mPlayerNameWidget.setText(mPlayerName);
         }
+
+        mUpdateManager = new UpdateManager(this);
     }
 
     @Override
@@ -51,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mServerAddress = mServerAddressWidget.getText().toString();
                 mPlayerName = mPlayerNameWidget.getText().toString();
 
+                if (TextUtils.isEmpty(mPlayerName) || TextUtils.isEmpty(mServerAddress)) {
+                    Toast.makeText(MainActivity.this, "请填写用户名或地址", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 SPUtils.put(this, "server_address", mServerAddress);
                 SPUtils.put(this, "player_name", mPlayerName);
 
@@ -59,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("player_name", mPlayerName);
                 startActivity(intent);
 
+                break;
+            case R.id.update_button:
+                mUpdateManager.update();
                 break;
         }
     }
