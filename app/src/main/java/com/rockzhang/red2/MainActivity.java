@@ -1,6 +1,10 @@
 package com.rockzhang.red2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -11,6 +15,8 @@ import android.widget.Toast;
 
 import com.rockzhang.red2.app.UpdateManager;
 import com.rockzhang.red2.utils.SPUtils;
+
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -77,6 +83,68 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mUpdateManager.update();
                 break;
         }
+    }
+
+    //https://blog.51cto.com/u_5018054/3402655 更新
+    private void checkUpdate() {
+        String versionName;
+        int versionCode;
+        try {
+            PackageManager pm = getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(getPackageName(), 0);
+            versionName = pi.versionName;
+            versionCode = pi.versionCode;
+
+
+        } catch (Exception e) {
+            versionName = "1.0";
+            versionCode = 1;
+        }
+
+//        Request request = new Request.Builder()
+//                .url("http://v.rockzhang.com/fourwar/app/config")
+//                .build();
+//
+//        FourWarApp.getInstance().getNetworkClient().newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//
+//                mainHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        showUpdateDialog();
+//                    }
+//                });
+//
+//            }
+//        });
+    }
+
+    private void showUpdateDialog() {
+        final AlertDialog.Builder normalDialog =
+                new AlertDialog.Builder(this);
+        normalDialog.setTitle("信息通告");
+        normalDialog.setMessage("检测到新版本需要升级");
+        normalDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        normalDialog.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+        normalDialog.show();
     }
 
 
